@@ -1,0 +1,44 @@
+2026-04-24 07:28:51,361 - INFO - Log 檔案: /home/keivn/workspace/kevin-skills/tender-report/v2/logs/scraper_20260424_072851.log
+2026-04-24 07:28:59,002 - INFO - 瀏覽器已啟動 (headless=False)
+2026-04-24 07:29:00,326 - INFO - ============================================================
+2026-04-24 07:29:00,334 - INFO - 政府採購網招標資料爬蟲 V2（含詳細頁）
+2026-04-24 07:29:00,334 - INFO - 關鍵字數量: 1
+2026-04-24 07:29:00,335 - INFO - 查詢日期: 2026/04/24 ~ 2026/04/24
+2026-04-24 07:29:00,335 - INFO - 過濾採購性質: 工程
+2026-04-24 07:29:00,336 - INFO - ============================================================
+2026-04-24 07:29:00,337 - INFO - 進度: 1/1
+2026-04-24 07:29:00,339 - INFO - 搜尋關鍵字: '校園'
+2026-04-24 07:29:05,057 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_校園.html
+2026-04-24 07:29:05,274 - INFO -   DEBUG row[0] a[0]: text='仁愛國中及仁愛國小校園整體改建工程（第一期）' href='/prkms/urlSelector/common/tpam?pk=NzExNDE1Mzc=' onclick=''
+2026-04-24 07:29:05,392 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzExNDE1Mzc=' onclick=''
+2026-04-24 07:29:05,597 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzExNDE1Mzc=' onclick=''
+2026-04-24 07:29:05,845 - INFO -   DEBUG row[1] a[0]: text='115年度臺南市政府教育局所屬學校校園廢樹幹(枝)災害清運處' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwODA=' onclick=''
+2026-04-24 07:29:05,938 - INFO -   DEBUG row[1] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwODA=' onclick=''
+2026-04-24 07:29:06,017 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwODA=' onclick=''
+2026-04-24 07:29:06,156 - INFO -   DEBUG row[2] a[0]: text='115年校園環境維護' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4OTc=' onclick=''
+2026-04-24 07:29:06,251 - INFO -   DEBUG row[2] a[1]: text='02' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4OTc=' onclick=''
+2026-04-24 07:29:06,335 - INFO -   DEBUG row[2] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4OTc=' onclick=''
+2026-04-24 07:29:11,077 - INFO -   關鍵字 '校園': 找到 16 筆，過濾後 5 筆
+2026-04-24 07:29:11,077 - INFO - 列表頁共取得 5 筆標案
+2026-04-24 07:29:11,077 - INFO - ============================================================
+2026-04-24 07:29:11,078 - INFO - 開始取得詳細頁資料...
+2026-04-24 07:29:11,078 - INFO - ============================================================
+2026-04-24 07:29:11,078 - INFO - 詳細頁進度: 1/5
+2026-04-24 07:29:11,078 - INFO -   嘗試取得詳細資料: 臺北市政府工務局 / 1150201C0016
+2026-04-24 07:29:14,362 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:29:16,807 - INFO - 詳細頁進度: 2/5
+2026-04-24 07:29:16,807 - INFO -   嘗試取得詳細資料: 彰化縣福興鄉文昌國民小學 / 11505
+2026-04-24 07:29:20,073 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:29:22,474 - INFO - 詳細頁進度: 3/5
+2026-04-24 07:29:22,475 - INFO -   嘗試取得詳細資料: 新北市立土城國民中學 / 115A006
+2026-04-24 07:29:25,147 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:29:27,533 - INFO - 詳細頁進度: 4/5
+2026-04-24 07:29:27,533 - INFO -   嘗試取得詳細資料: 臺北市立明湖國民中學 / 1150102
+2026-04-24 07:29:30,766 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:29:33,187 - INFO - 詳細頁進度: 5/5
+2026-04-24 07:29:33,187 - INFO -   嘗試取得詳細資料: 臺南市北門區三慈國民小學 / SCES11504-02
+2026-04-24 07:29:36,952 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:29:39,336 - INFO - ============================================================
+2026-04-24 07:29:39,336 - INFO - 爬蟲完成: 列表 5 筆, 詳細 5 筆
+2026-04-24 07:29:40,153 - INFO - 已匯出: /home/keivn/workspace/kevin-skills/tender-report/v2/output/20260424招標資料.xlsx (5 筆)
+2026-04-24 07:29:40,695 - INFO - 瀏覽器已關閉

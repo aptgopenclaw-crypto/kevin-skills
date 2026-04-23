@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+.query_remark {
+	font-size: 1.1em;
+}
+
+.query_remark tr:first-of-type td:first-of-type {
+	white-space: nowrap;
+	vertical-align: top;
+}
+
+.click_cursor {
+	cursor: pointer;
+}
+
+.red_3_err {
+	color: #FF0000 !important;
+	float: right;
+	cursor: pointer;
+}
+
+.branchDiv {
+	background-color: #FFFFFF;
+	border-width: 0px 1px 1px 1px;
+	border-color: #ccc;
+	border-style: solid;
+	border-radius: 0px 4px 4px 4px;
+	cursor: pointer;
+}
+
+.branchName:hover {
+	background-color: #DFE7F2;
+}
+
+.branchImage {
+	background: url(company.jpg);
+	background-size: 25px;
+	min-height: 20px;
+	min-width: 20px;
+	height: 20px;
+	width: 20px;
+}
+
+.branchRow {
+	display: flex;
+}
+
+.branchDropDown {
+	border-radius: 4px 4px 0 0;
+	border-bottom: 0px;
+}
+
+.ebbInputForm {
+	display: none;
+	cursor: default;
+}
+
+.ebbInputForm :invalid {
+	color: red;
+	border: 2px solid red;
+}
+
+.clickAnchor {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.clickAnchor:hover {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.imgDrag {
+	position: relative;
+	cursor: pointer;
+}
+
+.imgDrag #previewBook {
+	height: auto;
+	width: auto;
+	border-color: blue;
+	position: absolute;
+	z-index: 10
+}

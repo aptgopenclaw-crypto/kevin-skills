@@ -1,0 +1,9 @@
+# 基础依赖（必需）
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+lxml>=4.9.0
+
+# Selenium 相关依赖（仅在使用 Selenium 爬虫时需要）
+# Selenium 已移除：如需手動啟用，請添加 selenium 與 webdriver-manager

@@ -1,0 +1,148 @@
+2026-04-21 14:27:52,231 - INFO - Log 檔案: /home/keivn/workspace/kevin-skills/tender-report/v2/logs/scraper_20260421_142752.log
+2026-04-21 14:27:57,645 - INFO - 瀏覽器已啟動 (headless=False)
+2026-04-21 14:27:58,720 - INFO - ============================================================
+2026-04-21 14:27:58,721 - INFO - 政府採購網招標資料爬蟲 V2（含詳細頁）
+2026-04-21 14:27:58,721 - INFO - 關鍵字數量: 1
+2026-04-21 14:27:58,721 - INFO - 查詢日期: 2026/04/21 ~ 2026/04/21
+2026-04-21 14:27:58,721 - INFO - 過濾採購性質: 工程
+2026-04-21 14:27:58,722 - INFO - ============================================================
+2026-04-21 14:27:58,722 - INFO - 進度: 1/1
+2026-04-21 14:27:58,723 - INFO - 搜尋關鍵字: '校園'
+2026-04-21 14:28:05,418 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_校園.html
+2026-04-21 14:28:05,581 - INFO -   DEBUG row[0] a[0]: text='115年度重要傳統表演藝術數位教材資源校園推廣計畫' href='/prkms/urlSelector/common/tpam?pk=NzEyMDA0Nzc=' onclick=''
+2026-04-21 14:28:05,672 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDA0Nzc=' onclick=''
+2026-04-21 14:28:05,728 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDA0Nzc=' onclick=''
+2026-04-21 14:28:05,892 - INFO -   DEBUG row[1] a[0]: text='115年臺中市立雙十國民中學校園安防安全整合及AI智能防護設' href='/prkms/urlSelector/common/tpam?pk=NzEyMDA0NzY=' onclick=''
+2026-04-21 14:28:05,948 - INFO -   DEBUG row[1] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDA0NzY=' onclick=''
+2026-04-21 14:28:06,014 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDA0NzY=' onclick=''
+2026-04-21 14:28:06,119 - INFO -   DEBUG row[2] a[0]: text='115年度校園網路韌性強化案' href='/prkms/urlSelector/common/tpam?pk=NzEyMDAzOTg=' onclick=''
+2026-04-21 14:28:06,173 - INFO -   DEBUG row[2] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDAzOTg=' onclick=''
+2026-04-21 14:28:06,217 - INFO -   DEBUG row[2] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDAzOTg=' onclick=''
+2026-04-21 14:28:09,237 - INFO -   關鍵字 '校園': 找到 14 筆，過濾後 6 筆
+2026-04-21 14:28:09,238 - INFO - 列表頁共取得 6 筆標案
+2026-04-21 14:28:09,239 - INFO - ============================================================
+2026-04-21 14:28:09,240 - INFO - 開始取得詳細頁資料...
+2026-04-21 14:28:09,240 - INFO - ============================================================
+2026-04-21 14:28:09,241 - INFO - 詳細頁進度: 1/6
+2026-04-21 14:28:09,241 - INFO -   嘗試取得詳細資料: 國立暨南國際大學 / CMS115742
+2026-04-21 14:28:15,435 - INFO -   驗證碼嘗試 1/3
+2026-04-21 14:28:16,151 - INFO -   驗證碼截圖已儲存: /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/captcha_CMS115742_0.png
+2026-04-21 14:28:30,863 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-21 14:28:30,891 - INFO - Vision AI 回應: ```json
+{
+  "a_cards": ["梅花K", "紅心10"],
+  "b_cards": ["黑桃A", "梅花K", "紅心2", "紅心10", "方塊7", "梅花Q"],
+  "matches": [1, 3]
+}
+```
+2026-04-21 14:28:30,892 - INFO - 配對索引: [1, 3]
+2026-04-21 14:28:31,116 - INFO -   透過 checkbox name='choose' 找到 6 張 B區牌
+2026-04-21 14:28:31,117 - INFO -   找到 6 張 B區牌，需點擊索引: [1, 3]
+2026-04-21 14:28:31,722 - INFO -   已點擊 B區第 1 張牌
+2026-04-21 14:28:32,348 - INFO -   已點擊 B區第 3 張牌
+2026-04-21 14:28:33,554 - INFO -   已點擊確認送出
+2026-04-21 14:28:36,668 - WARNING -   驗證失敗，重試...
+2026-04-21 14:28:38,965 - INFO -   驗證碼嘗試 2/3
+2026-04-21 14:28:39,441 - INFO -   驗證碼截圖已儲存: /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/captcha_CMS115742_1.png
+2026-04-21 14:28:48,269 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-21 14:28:48,273 - INFO - Vision AI 回應: ```json
+{
+  "a_cards": ["方塊Q", "梅花7"],
+  "b_cards": ["紅心2", "方塊Q", "黑桃A", "梅花7", "紅心K", "黑桃10"],
+  "matches": [1, 3]
+}
+```
+2026-04-21 14:28:48,274 - INFO - 配對索引: [1, 3]
+2026-04-21 14:28:48,555 - INFO -   透過 checkbox name='choose' 找到 6 張 B區牌
+2026-04-21 14:28:48,555 - INFO -   找到 6 張 B區牌，需點擊索引: [1, 3]
+2026-04-21 14:28:49,128 - INFO -   已點擊 B區第 1 張牌
+2026-04-21 14:28:49,715 - INFO -   已點擊 B區第 3 張牌
+2026-04-21 14:28:50,992 - INFO -   已點擊確認送出
+2026-04-21 14:28:54,106 - WARNING -   驗證失敗，重試...
+2026-04-21 14:28:56,601 - INFO -   驗證碼嘗試 3/3
+2026-04-21 14:28:57,126 - INFO -   驗證碼截圖已儲存: /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/captcha_CMS115742_2.png
+2026-04-21 14:29:15,504 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-21 14:29:15,508 - INFO - Vision AI 回應: ```json
+{
+  "a_cards": ["紅心K", "方塊2"],
+  "b_cards": ["黑桃10", "方塊2", "黑桃K", "紅心K", "梅花5", "方塊Q"],
+  "matches": [1, 3]
+}
+```
+2026-04-21 14:29:15,508 - INFO - 配對索引: [1, 3]
+2026-04-21 14:29:15,767 - INFO -   透過 checkbox name='choose' 找到 6 張 B區牌
+2026-04-21 14:29:15,768 - INFO -   找到 6 張 B區牌，需點擊索引: [1, 3]
+2026-04-21 14:29:16,348 - INFO -   已點擊 B區第 1 張牌
+2026-04-21 14:29:16,949 - INFO -   已點擊 B區第 3 張牌
+2026-04-21 14:29:19,636 - INFO -   已點擊確認送出
+2026-04-21 14:29:22,705 - WARNING -   驗證失敗，重試...
+2026-04-21 14:29:25,018 - ERROR -   ✗ 驗證碼嘗試 3 次均失敗: CMS115742
+2026-04-21 14:29:27,027 - INFO - 詳細頁進度: 2/6
+2026-04-21 14:29:27,028 - INFO -   嘗試取得詳細資料: 桃園市龍潭區潛龍國民小學 / C11502
+2026-04-21 14:29:31,305 - INFO -   驗證碼嘗試 1/3
+2026-04-21 14:29:31,810 - INFO -   驗證碼截圖已儲存: /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/captcha_C11502_0.png
+2026-04-21 14:29:39,771 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-21 14:29:39,773 - INFO - Vision AI 回應: ```json
+{
+  "a_cards": ["黑桃K", "梅花5"],
+  "b_cards": ["方塊K", "梅花5", "紅心Q", "黑桃K", "方塊2", "紅心A"],
+  "matches": [1, 3]
+}
+```
+2026-04-21 14:29:39,773 - INFO - 配對索引: [1, 3]
+2026-04-21 14:29:40,026 - INFO -   透過 checkbox name='choose' 找到 6 張 B區牌
+2026-04-21 14:29:40,027 - INFO -   找到 6 張 B區牌，需點擊索引: [1, 3]
+2026-04-21 14:29:40,601 - INFO -   已點擊 B區第 1 張牌
+2026-04-21 14:29:41,199 - INFO -   已點擊 B區第 3 張牌
+2026-04-21 14:29:42,106 - INFO -   已點擊確認送出
+2026-04-21 14:29:45,223 - WARNING -   驗證失敗，重試...
+2026-04-21 14:29:48,064 - INFO -   驗證碼嘗試 2/3
+2026-04-21 14:29:48,530 - INFO -   驗證碼截圖已儲存: /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/captcha_C11502_1.png
+2026-04-21 14:30:09,987 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-21 14:30:09,991 - INFO - Vision AI 回應: ```json
+{
+  "a_cards": ["黑桃A", "紅心A"],
+  "b_cards": ["黑桃A", "黑桃K", "黑桃Q", "黑桃J", "紅心A", "紅心K"],
+  "matches": [0, 4]
+}
+```
+2026-04-21 14:30:09,992 - INFO - 配對索引: [0, 4]
+2026-04-21 14:30:10,228 - INFO -   透過 checkbox name='choose' 找到 6 張 B區牌
+2026-04-21 14:30:10,230 - INFO -   找到 6 張 B區牌，需點擊索引: [0, 4]
+2026-04-21 14:30:10,808 - INFO -   已點擊 B區第 0 張牌
+2026-04-21 14:30:11,386 - INFO -   已點擊 B區第 4 張牌
+2026-04-21 14:30:12,432 - INFO -   已點擊確認送出
+2026-04-21 14:30:15,545 - WARNING -   驗證失敗，重試...
+2026-04-21 14:30:17,969 - INFO -   驗證碼嘗試 3/3
+2026-04-21 14:30:18,444 - INFO -   驗證碼截圖已儲存: /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/captcha_C11502_2.png
+2026-04-21 14:30:30,465 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-21 14:30:30,469 - INFO - Vision AI 回應: ```json
+{
+  "a_cards": ["紅心10", "方塊A"],
+  "b_cards": ["黑桃7", "紅心10", "梅花8", "方塊A", "黑桃K", "方塊Q"],
+  "matches": [1, 3]
+}
+```
+2026-04-21 14:30:30,470 - INFO - 配對索引: [1, 3]
+2026-04-21 14:30:30,733 - INFO -   透過 checkbox name='choose' 找到 6 張 B區牌
+2026-04-21 14:30:30,734 - INFO -   找到 6 張 B區牌，需點擊索引: [1, 3]
+2026-04-21 14:30:31,315 - INFO -   已點擊 B區第 1 張牌
+2026-04-21 14:30:31,919 - INFO -   已點擊 B區第 3 張牌
+2026-04-21 14:30:34,112 - INFO -   已點擊確認送出
+2026-04-21 14:30:37,376 - INFO -   ✓ 驗證碼通過，成功取得詳細頁
+2026-04-21 14:30:39,768 - INFO - 詳細頁進度: 3/6
+2026-04-21 14:30:39,768 - INFO -   嘗試取得詳細資料: 致理學校財團法人致理科技大學 / 1150224
+2026-04-21 14:30:44,214 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-21 14:30:46,605 - INFO - 詳細頁進度: 4/6
+2026-04-21 14:30:46,605 - INFO -   嘗試取得詳細資料: 國立內埔高級農工職業學校 / 115239a05
+2026-04-21 14:30:51,671 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-21 14:30:54,030 - INFO - 詳細頁進度: 5/6
+2026-04-21 14:30:54,031 - INFO -   嘗試取得詳細資料: 高雄市立鼓山高級中學 / 11502
+2026-04-21 14:30:57,736 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-21 14:31:00,118 - INFO - 詳細頁進度: 6/6
+2026-04-21 14:31:00,118 - INFO -   嘗試取得詳細資料: 國立臺灣體育運動大學 / 1140410-C-01-01
+2026-04-21 14:31:03,814 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-21 14:31:06,160 - INFO - ============================================================
+2026-04-21 14:31:06,160 - INFO - 爬蟲完成: 列表 6 筆, 詳細 6 筆
+2026-04-21 14:31:06,583 - INFO - 已匯出: /home/keivn/workspace/kevin-skills/tender-report/v2/output/20260421招標資料.xlsx (6 筆)
+2026-04-21 14:31:07,014 - INFO - 瀏覽器已關閉

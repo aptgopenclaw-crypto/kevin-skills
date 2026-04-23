@@ -1,0 +1,297 @@
+2026-04-24 07:31:21,257 - INFO - Log 檔案: /home/keivn/workspace/kevin-skills/tender-report/v2/logs/scraper_20260424_073121.log
+2026-04-24 07:31:25,557 - INFO - 瀏覽器已啟動 (headless=False)
+2026-04-24 07:31:26,072 - INFO - ============================================================
+2026-04-24 07:31:26,072 - INFO - 政府採購網招標資料爬蟲 V2（含詳細頁）
+2026-04-24 07:31:26,072 - INFO - 關鍵字數量: 19
+2026-04-24 07:31:26,073 - INFO - 查詢日期: 2026/04/24 ~ 2026/04/24
+2026-04-24 07:31:26,073 - INFO - 過濾採購性質: 工程
+2026-04-24 07:31:26,073 - INFO - ============================================================
+2026-04-24 07:31:26,073 - INFO - 進度: 1/19
+2026-04-24 07:31:26,074 - INFO - 搜尋關鍵字: '路燈'
+2026-04-24 07:31:30,383 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_路燈.html
+2026-04-24 07:31:30,510 - INFO -   DEBUG row[0] a[0]: text='臺北市路燈換裝暨維護案（A項-B項）' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4NDk=' onclick=''
+2026-04-24 07:31:30,564 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4NDk=' onclick=''
+2026-04-24 07:31:30,645 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4NDk=' onclick=''
+2026-04-24 07:31:30,764 - INFO -   DEBUG row[1] a[0]: text='115年度苗栗市公所路燈維修高空作業車財物採購案' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4NDg=' onclick=''
+2026-04-24 07:31:30,857 - INFO -   DEBUG row[1] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4NDg=' onclick=''
+2026-04-24 07:31:30,969 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4NDg=' onclick=''
+2026-04-24 07:31:31,094 - INFO -   DEBUG row[2] a[0]: text='五峰鄉路燈普查及管養系統勞務採購(開口契約)' href='/prkms/urlSelector/common/tpam?pk=NzExOTQzMjY=' onclick=''
+2026-04-24 07:31:31,189 - INFO -   DEBUG row[2] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzExOTQzMjY=' onclick=''
+2026-04-24 07:31:31,291 - INFO -   DEBUG row[2] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzExOTQzMjY=' onclick=''
+2026-04-24 07:31:32,198 - INFO -   關鍵字 '路燈': 找到 3 筆，過濾後 0 筆
+2026-04-24 07:31:34,229 - INFO - 進度: 2/19
+2026-04-24 07:31:34,230 - INFO - 搜尋關鍵字: '充電'
+2026-04-24 07:31:36,558 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_充電.html
+2026-04-24 07:31:36,661 - INFO -   DEBUG row[0] a[0]: text='115年臺中港務分公司職業安全衛生處電動車及充電樁採購' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4MjU=' onclick=''
+2026-04-24 07:31:36,731 - INFO -   DEBUG row[0] a[1]: text='02' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4MjU=' onclick=''
+2026-04-24 07:31:36,786 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4MjU=' onclick=''
+2026-04-24 07:31:37,075 - INFO -   關鍵字 '充電': 找到 1 筆，過濾後 0 筆
+2026-04-24 07:31:39,080 - INFO - 進度: 3/19
+2026-04-24 07:31:39,081 - INFO - 搜尋關鍵字: '安全'
+2026-04-24 07:31:41,534 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_安全.html
+2026-04-24 07:31:41,663 - INFO -   DEBUG row[0] a[0]: text='蘭嶼高中--115年度消防安全設備改善財物採購' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQyOTk=' onclick=''
+2026-04-24 07:31:41,777 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQyOTk=' onclick=''
+2026-04-24 07:31:41,845 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQyOTk=' onclick=''
+2026-04-24 07:31:41,934 - INFO -   DEBUG row[1] a[0]: text='臺南市115年度學校午餐衛生安全管理教育訓練委辦服務勞務採購' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQyNDc=' onclick=''
+2026-04-24 07:31:42,003 - INFO -   DEBUG row[1] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQyNDc=' onclick=''
+2026-04-24 07:31:42,055 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQyNDc=' onclick=''
+2026-04-24 07:31:42,137 - INFO -   DEBUG row[2] a[0]: text='115年度職業安全衛生危害預防全國巡迴展示活動' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5MTM=' onclick=''
+2026-04-24 07:31:42,186 - INFO -   DEBUG row[2] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5MTM=' onclick=''
+2026-04-24 07:31:42,246 - INFO -   DEBUG row[2] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5MTM=' onclick=''
+2026-04-24 07:31:46,286 - INFO -   關鍵字 '安全': 找到 18 筆，過濾後 1 筆
+2026-04-24 07:31:48,291 - INFO - 進度: 4/19
+2026-04-24 07:31:48,296 - INFO - 搜尋關鍵字: '站牌'
+2026-04-24 07:31:50,893 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_站牌.html
+2026-04-24 07:31:50,973 - INFO -   關鍵字 '站牌': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:31:52,985 - INFO - 進度: 5/19
+2026-04-24 07:31:52,986 - INFO - 搜尋關鍵字: '路口'
+2026-04-24 07:31:55,420 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_路口.html
+2026-04-24 07:31:55,524 - INFO -   DEBUG row[0] a[0]: text='中壢區仁慈路(中山東路三段路口及榮民南路口)瓶頸段管線推進工' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM2OTg=' onclick=''
+2026-04-24 07:31:55,583 - INFO -   DEBUG row[0] a[1]: text='02' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM2OTg=' onclick=''
+2026-04-24 07:31:55,643 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM2OTg=' onclick=''
+2026-04-24 07:31:55,721 - INFO -   DEBUG row[1] a[0]: text='中壢區中園路(南園二路口)瓶頸段管線推進工程' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM2ODA=' onclick=''
+2026-04-24 07:31:55,765 - INFO -   DEBUG row[1] a[1]: text='02' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM2ODA=' onclick=''
+2026-04-24 07:31:55,831 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM2ODA=' onclick=''
+2026-04-24 07:31:56,367 - INFO -   關鍵字 '路口': 找到 2 筆，過濾後 2 筆
+2026-04-24 07:31:58,372 - INFO - 進度: 6/19
+2026-04-24 07:31:58,373 - INFO - 搜尋關鍵字: '下水道'
+2026-04-24 07:32:00,953 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_下水道.html
+2026-04-24 07:32:01,070 - INFO -   DEBUG row[0] a[0]: text='115年度臺東縣雨水下水道清淤工程(開口契約)' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5NDc=' onclick=''
+2026-04-24 07:32:01,129 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5NDc=' onclick=''
+2026-04-24 07:32:01,191 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5NDc=' onclick=''
+2026-04-24 07:32:01,275 - INFO -   DEBUG row[1] a[0]: text='115年度雲林縣斗六市雨水下水道清疏工程' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM3OTg=' onclick=''
+2026-04-24 07:32:01,327 - INFO -   DEBUG row[1] a[1]: text='02' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM3OTg=' onclick=''
+2026-04-24 07:32:01,394 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM3OTg=' onclick=''
+2026-04-24 07:32:01,480 - INFO -   DEBUG row[2] a[0]: text='115年度蘇澳鎮雨水下水道(Q幹線上游段)清淤工程' href='/prkms/urlSelector/common/tpam?pk=NzEyMDMzNTA=' onclick=''
+2026-04-24 07:32:01,535 - INFO -   DEBUG row[2] a[1]: text='03' href='/prkms/urlSelector/common/tpam?pk=NzEyMDMzNTA=' onclick=''
+2026-04-24 07:32:01,579 - INFO -   DEBUG row[2] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDMzNTA=' onclick=''
+2026-04-24 07:32:02,307 - INFO -   關鍵字 '下水道': 找到 3 筆，過濾後 3 筆
+2026-04-24 07:32:04,311 - INFO - 進度: 7/19
+2026-04-24 07:32:04,313 - INFO - 搜尋關鍵字: '水情'
+2026-04-24 07:32:06,686 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_水情.html
+2026-04-24 07:32:06,731 - INFO -   關鍵字 '水情': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:32:08,739 - INFO - 進度: 8/19
+2026-04-24 07:32:08,740 - INFO - 搜尋關鍵字: '淹水'
+2026-04-24 07:32:11,665 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_淹水.html
+2026-04-24 07:32:11,747 - INFO -   關鍵字 '淹水': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:32:13,755 - INFO - 進度: 9/19
+2026-04-24 07:32:13,756 - INFO - 搜尋關鍵字: '校園'
+2026-04-24 07:32:16,334 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_校園.html
+2026-04-24 07:32:16,443 - INFO -   DEBUG row[0] a[0]: text='仁愛國中及仁愛國小校園整體改建工程（第一期）' href='/prkms/urlSelector/common/tpam?pk=NzExNDE1Mzc=' onclick=''
+2026-04-24 07:32:16,493 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzExNDE1Mzc=' onclick=''
+2026-04-24 07:32:16,544 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzExNDE1Mzc=' onclick=''
+2026-04-24 07:32:16,642 - INFO -   DEBUG row[1] a[0]: text='115年度臺南市政府教育局所屬學校校園廢樹幹(枝)災害清運處' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwODA=' onclick=''
+2026-04-24 07:32:16,689 - INFO -   DEBUG row[1] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwODA=' onclick=''
+2026-04-24 07:32:16,735 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwODA=' onclick=''
+2026-04-24 07:32:16,816 - INFO -   DEBUG row[2] a[0]: text='115年校園環境維護' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4OTc=' onclick=''
+2026-04-24 07:32:16,862 - INFO -   DEBUG row[2] a[1]: text='02' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4OTc=' onclick=''
+2026-04-24 07:32:16,945 - INFO -   DEBUG row[2] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4OTc=' onclick=''
+2026-04-24 07:32:20,239 - INFO -   關鍵字 '校園': 找到 16 筆，過濾後 5 筆
+2026-04-24 07:32:22,243 - INFO - 進度: 10/19
+2026-04-24 07:32:22,244 - INFO - 搜尋關鍵字: '物聯網'
+2026-04-24 07:32:24,636 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_物聯網.html
+2026-04-24 07:32:24,687 - INFO -   關鍵字 '物聯網': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:32:26,693 - INFO - 進度: 11/19
+2026-04-24 07:32:26,695 - INFO - 搜尋關鍵字: '空氣品質'
+2026-04-24 07:32:29,009 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_空氣品質.html
+2026-04-24 07:32:29,079 - INFO -   關鍵字 '空氣品質': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:32:31,082 - INFO - 進度: 12/19
+2026-04-24 07:32:31,083 - INFO - 搜尋關鍵字: '智慧電網'
+2026-04-24 07:32:33,400 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_智慧電網.html
+2026-04-24 07:32:33,441 - INFO -   關鍵字 '智慧電網': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:32:35,448 - INFO - 進度: 13/19
+2026-04-24 07:32:35,448 - INFO - 搜尋關鍵字: '智慧建築'
+2026-04-24 07:32:37,717 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_智慧建築.html
+2026-04-24 07:32:37,758 - INFO -   關鍵字 '智慧建築': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:32:39,762 - INFO - 進度: 14/19
+2026-04-24 07:32:39,762 - INFO - 搜尋關鍵字: '冰水主機'
+2026-04-24 07:32:42,913 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_冰水主機.html
+2026-04-24 07:32:43,022 - INFO -   DEBUG row[0] a[0]: text='115年度臺南市政府民治市政中心冰水主機汰舊更新(節能績效保' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQxODQ=' onclick=''
+2026-04-24 07:32:43,069 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQxODQ=' onclick=''
+2026-04-24 07:32:43,159 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQxODQ=' onclick=''
+2026-04-24 07:32:43,314 - INFO -   DEBUG row[1] a[0]: text='內埔菸桶菸倉庫120RT冰水主機汰換' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4ODQ=' onclick=''
+2026-04-24 07:32:43,388 - INFO -   DEBUG row[1] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4ODQ=' onclick=''
+2026-04-24 07:32:43,455 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4ODQ=' onclick=''
+2026-04-24 07:32:43,990 - INFO -   關鍵字 '冰水主機': 找到 2 筆，過濾後 0 筆
+2026-04-24 07:32:45,993 - INFO - 進度: 15/19
+2026-04-24 07:32:45,994 - INFO - 搜尋關鍵字: '淨零'
+2026-04-24 07:32:49,193 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_淨零.html
+2026-04-24 07:32:49,315 - INFO -   DEBUG row[0] a[0]: text='115-116年淨零轉型計畫中央空調設備節能汰換工程委託設計' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM0MzU=' onclick=''
+2026-04-24 07:32:49,382 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM0MzU=' onclick=''
+2026-04-24 07:32:49,443 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM0MzU=' onclick=''
+2026-04-24 07:32:49,684 - INFO -   關鍵字 '淨零': 找到 1 筆，過濾後 0 筆
+2026-04-24 07:32:51,689 - INFO - 進度: 16/19
+2026-04-24 07:32:51,690 - INFO - 搜尋關鍵字: '不斷電'
+2026-04-24 07:32:54,099 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_不斷電.html
+2026-04-24 07:32:54,191 - INFO -   DEBUG row[0] a[0]: text='供電系統不斷電電池採購（含安裝）' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQzMDQ=' onclick=''
+2026-04-24 07:32:54,251 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQzMDQ=' onclick=''
+2026-04-24 07:32:54,313 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQzMDQ=' onclick=''
+2026-04-24 07:32:54,395 - INFO -   DEBUG row[1] a[0]: text='115年嘉義市號誌不斷電系統(新增30處)' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwMTY=' onclick=''
+2026-04-24 07:32:54,453 - INFO -   DEBUG row[1] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwMTY=' onclick=''
+2026-04-24 07:32:54,505 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDQwMTY=' onclick=''
+2026-04-24 07:32:54,588 - INFO -   DEBUG row[2] a[0]: text='法務部115年度主機房不斷電系統模組擴充購置案' href='/prkms/urlSelector/common/tpam?pk=NzEyMDMxMjU=' onclick=''
+2026-04-24 07:32:54,634 - INFO -   DEBUG row[2] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDMxMjU=' onclick=''
+2026-04-24 07:32:54,702 - INFO -   DEBUG row[2] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDMxMjU=' onclick=''
+2026-04-24 07:32:55,381 - INFO -   關鍵字 '不斷電': 找到 3 筆，過濾後 0 筆
+2026-04-24 07:32:57,388 - INFO - 進度: 17/19
+2026-04-24 07:32:57,389 - INFO - 搜尋關鍵字: '能源管理'
+2026-04-24 07:32:59,810 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_能源管理.html
+2026-04-24 07:32:59,923 - INFO -   DEBUG row[0] a[0]: text='新北市ISO14064-1：2018溫室氣體盤查標準主導查證' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5MjI=' onclick=''
+2026-04-24 07:32:59,969 - INFO -   DEBUG row[0] a[1]: text='01' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5MjI=' onclick=''
+2026-04-24 07:33:00,021 - INFO -   DEBUG row[0] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM5MjI=' onclick=''
+2026-04-24 07:33:00,107 - INFO -   DEBUG row[1] a[0]: text='115年度EMS校園能源管理系統委託建置勞務採購案' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4MTQ=' onclick=''
+2026-04-24 07:33:00,154 - INFO -   DEBUG row[1] a[1]: text='02' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4MTQ=' onclick=''
+2026-04-24 07:33:00,210 - INFO -   DEBUG row[1] a[2]: text='檢視' href='/prkms/urlSelector/common/tpam?pk=NzEyMDM4MTQ=' onclick=''
+2026-04-24 07:33:00,903 - INFO -   關鍵字 '能源管理': 找到 2 筆，過濾後 0 筆
+2026-04-24 07:33:02,908 - INFO - 進度: 18/19
+2026-04-24 07:33:02,908 - INFO - 搜尋關鍵字: '電表'
+2026-04-24 07:33:05,139 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_電表.html
+2026-04-24 07:33:05,177 - INFO -   關鍵字 '電表': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:33:07,182 - INFO - 進度: 19/19
+2026-04-24 07:33:07,182 - INFO - 搜尋關鍵字: '微電網'
+2026-04-24 07:33:10,727 - INFO -   DEBUG: 已儲存第一筆 row HTML → /home/keivn/workspace/kevin-skills/tender-report/v2/output/debug/list_row_debug_微電網.html
+2026-04-24 07:33:10,785 - INFO -   關鍵字 '微電網': 找到 0 筆，過濾後 0 筆
+2026-04-24 07:33:10,788 - INFO - 列表頁共取得 11 筆標案
+2026-04-24 07:33:10,788 - INFO - ============================================================
+2026-04-24 07:33:10,791 - INFO - 開始取得詳細頁資料...
+2026-04-24 07:33:10,792 - INFO - ============================================================
+2026-04-24 07:33:10,794 - INFO - 詳細頁進度: 1/11
+2026-04-24 07:33:10,796 - INFO -   嘗試取得詳細資料: 新北市立土城國民中學 / 115A006
+2026-04-24 07:33:14,418 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:33:16,831 - INFO - 詳細頁進度: 2/11
+2026-04-24 07:33:16,831 - INFO -   嘗試取得詳細資料: 台灣自來水股份有限公司第二區管理處 / WR-115-0201-0015
+2026-04-24 07:33:19,524 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:33:21,924 - INFO - 詳細頁進度: 3/11
+2026-04-24 07:33:21,924 - INFO -   嘗試取得詳細資料: 台灣自來水股份有限公司第二區管理處 / WR-115-0201-0013
+2026-04-24 07:33:25,220 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:33:27,607 - INFO - 詳細頁進度: 4/11
+2026-04-24 07:33:27,607 - INFO -   嘗試取得詳細資料: 臺東縣政府 / 115190310189
+2026-04-24 07:33:30,619 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:33:33,097 - INFO - 詳細頁進度: 5/11
+2026-04-24 07:33:33,098 - INFO -   嘗試取得詳細資料: 雲林縣斗六市公所 / 1150423-3
+2026-04-24 07:33:36,249 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:33:38,642 - INFO - 詳細頁進度: 6/11
+2026-04-24 07:33:38,643 - INFO -   嘗試取得詳細資料: 宜蘭縣蘇澳鎮公所 / 1150330
+2026-04-24 07:33:41,647 - INFO -   窮舉法嘗試 1/20
+2026-04-24 07:33:41,816 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:33:42,287 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:33:42,732 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:33:43,055 - INFO -   已點擊確認送出
+2026-04-24 07:33:46,168 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:33:46,169 - INFO -   窮舉法嘗試 2/20
+2026-04-24 07:33:46,382 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:33:46,383 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:33:46,889 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:33:47,299 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:33:47,571 - INFO -   已點擊確認送出
+2026-04-24 07:33:50,635 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:33:50,636 - INFO -   窮舉法嘗試 3/20
+2026-04-24 07:33:50,783 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:33:50,785 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:33:51,281 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:33:51,701 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:33:52,099 - INFO -   已點擊確認送出
+2026-04-24 07:33:55,201 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:33:55,202 - INFO -   窮舉法嘗試 4/20
+2026-04-24 07:33:55,341 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:33:55,342 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:33:55,796 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:33:56,226 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:33:56,440 - INFO -   已點擊確認送出
+2026-04-24 07:33:59,524 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:33:59,524 - INFO -   窮舉法嘗試 5/20
+2026-04-24 07:33:59,716 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:33:59,717 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:00,172 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:00,603 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:00,852 - INFO -   已點擊確認送出
+2026-04-24 07:34:03,949 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:03,950 - INFO -   窮舉法嘗試 6/20
+2026-04-24 07:34:04,104 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:04,104 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:04,543 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:04,945 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:05,159 - INFO -   已點擊確認送出
+2026-04-24 07:34:08,275 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:08,275 - INFO -   窮舉法嘗試 7/20
+2026-04-24 07:34:08,419 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:08,419 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:09,127 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:09,659 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:09,919 - INFO -   已點擊確認送出
+2026-04-24 07:34:13,027 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:13,027 - INFO -   窮舉法嘗試 8/20
+2026-04-24 07:34:13,186 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:13,187 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:13,624 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:14,031 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:14,284 - INFO -   已點擊確認送出
+2026-04-24 07:34:17,397 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:17,397 - INFO -   窮舉法嘗試 9/20
+2026-04-24 07:34:17,546 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:17,547 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:17,976 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:18,409 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:18,719 - INFO -   已點擊確認送出
+2026-04-24 07:34:21,900 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:21,900 - INFO -   窮舉法嘗試 10/20
+2026-04-24 07:34:22,173 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:22,173 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:22,663 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:23,108 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:23,441 - INFO -   已點擊確認送出
+2026-04-24 07:34:26,524 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:26,525 - INFO -   窮舉法嘗試 11/20
+2026-04-24 07:34:26,759 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:26,760 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:27,252 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:27,668 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:27,992 - INFO -   已點擊確認送出
+2026-04-24 07:34:31,059 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:31,060 - INFO -   窮舉法嘗試 12/20
+2026-04-24 07:34:31,292 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:31,293 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:31,762 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:32,176 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:32,473 - INFO -   已點擊確認送出
+2026-04-24 07:34:35,533 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:35,533 - INFO -   窮舉法嘗試 13/20
+2026-04-24 07:34:35,760 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:35,761 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:36,302 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:36,765 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:37,072 - INFO -   已點擊確認送出
+2026-04-24 07:34:40,154 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:40,154 - INFO -   窮舉法嘗試 14/20
+2026-04-24 07:34:40,322 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:40,323 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:40,788 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:41,246 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:41,551 - INFO -   已點擊確認送出
+2026-04-24 07:34:44,624 - INFO -   組合 (0, 1) 未通過，繼續嘗試...
+2026-04-24 07:34:44,624 - INFO -   窮舉法嘗試 15/20
+2026-04-24 07:34:44,793 - INFO -   偵測到驗證碼更新，重新開始窮舉
+2026-04-24 07:34:44,794 - INFO -   選擇組合 1/15: 索引 (0, 1)
+2026-04-24 07:34:45,271 - INFO -   已選擇 B區第 0 張牌
+2026-04-24 07:34:45,708 - INFO -   已選擇 B區第 1 張牌
+2026-04-24 07:34:46,464 - INFO -   已點擊確認送出
+2026-04-24 07:34:49,560 - INFO -   ✓ 窮舉法驗證碼通過！組合: (0, 1)，嘗試次數: 15
+2026-04-24 07:34:52,081 - INFO - 詳細頁進度: 7/11
+2026-04-24 07:34:52,081 - INFO -   嘗試取得詳細資料: 臺北市政府工務局 / 1150201C0016
+2026-04-24 07:34:54,736 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:34:57,127 - INFO - 詳細頁進度: 8/11
+2026-04-24 07:34:57,127 - INFO -   嘗試取得詳細資料: 彰化縣福興鄉文昌國民小學 / 11505
+2026-04-24 07:35:00,186 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:35:02,565 - INFO - 詳細頁進度: 9/11
+2026-04-24 07:35:02,565 - INFO -   嘗試取得詳細資料: 新北市立土城國民中學 / 115A006
+2026-04-24 07:35:05,135 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:35:07,520 - INFO - 詳細頁進度: 10/11
+2026-04-24 07:35:07,520 - INFO -   嘗試取得詳細資料: 臺北市立明湖國民中學 / 1150102
+2026-04-24 07:35:10,723 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:35:13,116 - INFO - 詳細頁進度: 11/11
+2026-04-24 07:35:13,116 - INFO -   嘗試取得詳細資料: 臺南市北門區三慈國民小學 / SCES11504-02
+2026-04-24 07:35:15,938 - INFO -   直接進入詳細頁（無驗證碼）
+2026-04-24 07:35:18,564 - INFO - ============================================================
+2026-04-24 07:35:18,564 - INFO - 爬蟲完成: 列表 11 筆, 詳細 11 筆
+2026-04-24 07:35:19,705 - INFO - 已匯出: /home/keivn/workspace/kevin-skills/tender-report/v2/output/20260424招標資料.xlsx (11 筆)
+2026-04-24 07:35:20,344 - INFO - 瀏覽器已關閉
