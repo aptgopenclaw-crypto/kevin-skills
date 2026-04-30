@@ -1,0 +1,42 @@
+{
+  "test_time": "2026-04-29T13:15:29.353395",
+  "config": {
+    "rounds_per_model": 5,
+    "max_attempts_per_round": 30
+  },
+  "results": {
+    "google/gemma-3-27b-it": {
+      "total_rounds": 5,
+      "passed": 5,
+      "pass_rate": 1.0,
+      "avg_attempts_when_passed": 8.0,
+      "rounds": [
+        {
+          "success": true,
+          "attempts": 13,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 15,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 3,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 2,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 7,
+          "error": null
+        }
+      ]
+    }
+  }
+}

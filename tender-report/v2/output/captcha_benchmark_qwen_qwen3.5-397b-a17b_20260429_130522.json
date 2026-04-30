@@ -1,0 +1,42 @@
+{
+  "test_time": "2026-04-29T13:05:22.973121",
+  "config": {
+    "rounds_per_model": 5,
+    "max_attempts_per_round": 30
+  },
+  "results": {
+    "qwen/qwen3.5-397b-a17b": {
+      "total_rounds": 5,
+      "passed": 5,
+      "pass_rate": 1.0,
+      "avg_attempts_when_passed": 2.6,
+      "rounds": [
+        {
+          "success": true,
+          "attempts": 8,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 1,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 1,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 1,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 2,
+          "error": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "test_time": "2026-04-29T11:49:18.876015",
+  "config": {
+    "rounds_per_model": 5,
+    "max_attempts_per_round": 30
+  },
+  "results": {
+    "meta/llama-3.2-90b-vision-instruct": {
+      "total_rounds": 5,
+      "passed": 5,
+      "pass_rate": 1.0,
+      "avg_attempts_when_passed": 12.8,
+      "rounds": [
+        {
+          "success": true,
+          "attempts": 23,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 13,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 5,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 9,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 14,
+          "error": null
+        }
+      ]
+    }
+  }
+}

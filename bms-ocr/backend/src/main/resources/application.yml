@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+nvidia:
+  api:
+    key: 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
+    base-url: https://integrate.api.nvidia.com/v1
+    model: google/gemma-4-31b-it
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+logging:
+  level:
+    com.bms.ocr: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+  file:
+    name: logs/bms-ocr.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7

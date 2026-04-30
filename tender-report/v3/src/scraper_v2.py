@@ -379,7 +379,7 @@ class TenderScraperV2:
             logger.warning(f"錯誤: {len(self.errors)} 個關鍵字")
 
     def export_to_excel(self):
-        """匯出 Excel（PCC 含連結版格式）"""
+        """匯出 Excel"""
         data_to_export = self.detail_data if self.detail_data else self.data
         if not data_to_export:
             logger.warning("沒有資料可匯出")
@@ -388,13 +388,11 @@ class TenderScraperV2:
         try:
             os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-            # 整理匯出欄位（11 欄，對齊範本格式）
+            # 整理匯出欄位
             export_rows = []
-            detail_urls = []  # 保存 detail URL 供後續加超連結
-            for item in data_to_export:
-                detail_url = item.get('_detail_url', '')
+            for idx, item in enumerate(data_to_export, 1):
                 row = {
-                    '項次': item.get('關鍵字', ''),
+                    '項次': idx,
                     '機關名稱': item.get('機關名稱', ''),
                     '標案案號': item.get('標案案號', ''),
                     '標案名稱': item.get('標案名稱', ''),
@@ -404,16 +402,31 @@ class TenderScraperV2:
                     '公告日期': item.get('公告日期', item.get('公告日', '')),
                     '截止投標': item.get('截止投標', ''),
                     '預算金額': item.get('預算金額', ''),
-                    '詳細連結': detail_url,
+                    # 詳細頁欄位
+                    '機關代碼': item.get('機關代碼', ''),
+                    '單位名稱': item.get('單位名稱', ''),
+                    '機關地址': item.get('機關地址', ''),
+                    '聯絡人': item.get('聯絡人', ''),
+                    '聯絡電話': item.get('聯絡電話', ''),
+                    '電子郵件信箱': item.get('電子郵件信箱', ''),
+                    '標的分類': item.get('標的分類', ''),
+                    '採購金額級距': item.get('採購金額級距', ''),
+                    '辦理方式': item.get('辦理方式', ''),
+                    '決標方式': item.get('決標方式', ''),
+                    '招標狀態': item.get('招標狀態', ''),
+                    '開標時間': item.get('開標時間', ''),
+                    '開標地點': item.get('開標地點', ''),
+                    '是否訂有底價': item.get('是否訂有底價', ''),
+                    '履約地點': item.get('履約地點', ''),
+                    '關鍵字': item.get('關鍵字', ''),
                 }
                 export_rows.append(row)
-                detail_urls.append(detail_url)
 
             df = pd.DataFrame(export_rows)
 
             with pd.ExcelWriter(OUTPUT_FILE, engine='openpyxl') as writer:
                 df.to_excel(writer, sheet_name='招標資料', index=False)
-                self._style_excel(writer, detail_urls)
+                self._style_excel(writer)
 
             logger.info(f"已匯出: {OUTPUT_FILE} ({len(export_rows)} 筆)")
             return True
@@ -424,58 +437,37 @@ class TenderScraperV2:
             traceback.print_exc()
             return False
 
-    def _style_excel(self, writer, detail_urls):
-        """Excel 樣式（PCC 含連結版格式）"""
-        from openpyxl.styles import Border, Side, Font, Alignment
-        from openpyxl.worksheet.hyperlink import Hyperlink
+    def _style_excel(self, writer):
+        """Excel 樣式"""
+        from openpyxl.styles import Border, Side, PatternFill, Font, Alignment
+        from openpyxl.utils import get_column_letter
 
         ws = writer.sheets['招標資料']
-
-        # 範本欄寬
-        col_widths = {
-            'A': 18,    # 項次
-            'B': 31,    # 機關名稱
-            'C': 22,    # 標案案號
-            'D': 72,    # 標案名稱
-            'E': 13,    # 傳輸次數
-            'F': 13,    # 招標方式
-            'G': 13,    # 採購性質
-            'H': 13,    # 公告日期
-            'I': 13,    # 截止投標
-            'J': 13.5,  # 預算金額
-            'K': 13,    # 詳細連結
-        }
-        for col_letter, width in col_widths.items():
-            ws.column_dimensions[col_letter].width = width
-
-        # 字體定義
-        base_font = Font(name='新細明體', size=12)
-        header_font = Font(name='新細明體', size=12, bold=True)
-        link_font = Font(name='新細明體', size=12, underline='single', color='0563C1')
         thin_border = Border(
             left=Side(style='thin'), right=Side(style='thin'),
             top=Side(style='thin'), bottom=Side(style='thin')
         )
+        header_fill = PatternFill(start_color='92D050', end_color='92D050', fill_type='solid')
+        header_font = Font(bold=True, color='000000')
         header_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
-        cell_align = Alignment(vertical='center', wrap_text=False)
 
+        max_lengths = {}
         for row_idx, row in enumerate(ws.iter_rows(min_row=1, max_row=ws.max_row, min_col=1, max_col=ws.max_column), 1):
             for col_idx, cell in enumerate(row, 1):
+                col_letter = get_column_letter(col_idx)
+                if cell.value:
+                    length = len(str(cell.value))
+                    max_lengths[col_letter] = max(max_lengths.get(col_letter, 0), length)
                 cell.border = thin_border
                 if row_idx == 1:
+                    cell.fill = header_fill
                     cell.font = header_font
                     cell.alignment = header_align
                 else:
-                    cell.font = base_font
-                    cell.alignment = cell_align
+                    cell.alignment = Alignment(vertical='center', wrap_text=True)
 
-        # 標案名稱 (D 欄) 加超連結
-        for data_row_idx, url in enumerate(detail_urls):
-            if url:
-                cell = ws.cell(row=data_row_idx + 2, column=4)  # D 欄, +2 跳過 header
-                cell.hyperlink = Hyperlink(ref=cell.coordinate, target=url)
-                cell.font = link_font
-
+        for col_letter, max_length in max_lengths.items():
+            ws.column_dimensions[col_letter].width = min(max_length * 1.5 + 2, 50)
         ws.row_dimensions[1].height = 30
 
 

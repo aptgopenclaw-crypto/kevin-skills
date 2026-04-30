@@ -1,0 +1,42 @@
+{
+  "test_time": "2026-04-29T11:14:56.995239",
+  "config": {
+    "rounds_per_model": 5,
+    "max_attempts_per_round": 30
+  },
+  "results": {
+    "nvidia/nemotron-nano-12b-v2-vl": {
+      "total_rounds": 5,
+      "passed": 4,
+      "pass_rate": 0.8,
+      "avg_attempts_when_passed": 12.25,
+      "rounds": [
+        {
+          "success": true,
+          "attempts": 6,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 27,
+          "error": null
+        },
+        {
+          "success": true,
+          "attempts": 11,
+          "error": null
+        },
+        {
+          "success": false,
+          "attempts": 30,
+          "error": "超過最大嘗試次數"
+        },
+        {
+          "success": true,
+          "attempts": 5,
+          "error": null
+        }
+      ]
+    }
+  }
+}
