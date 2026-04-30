@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+logs/
+output/
+*.xlsx
+target/
+.idea/
+.vscode/
+*.log

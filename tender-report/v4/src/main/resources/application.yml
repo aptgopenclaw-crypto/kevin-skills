@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: tender-scraper
+
+# ═══ 爬蟲設定 ═══
+scraper:
+  # 搜尋關鍵字
+  keywords:
+    - 路燈
+    - 充電
+    - 安全
+    - 站牌
+    - 路口
+    - 下水道
+    - 水情
+    - 淹水
+    - 校園
+    - 物聯網
+    - 空氣品質
+    - 智慧電網
+    - 智慧建築
+    - 冰水主機
+    - 淨零
+    - 不斷電
+    - 能源管理
+    - 電表
+    - 微電網
+
+  # 政府採購網 URL
+  base-url: https://web.pcc.gov.tw/prkms/tender/common/basic/readTenderBasic
+  detail-url: https://web.pcc.gov.tw/tps/QueryTender/query/searchTenderDetail
+
+  # HTTP 設定
+  user-agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+  request-timeout: 30
+  request-delay: 2
+
+  # 過濾：採購性質（空字串 = 不過濾）
+  filter-procurement-type: 工程
+
+  # 驗證碼設定
+  captcha-max-retries: 5
+
+  # Playwright
+  headless: true
+
+  # 輸出目錄
+  output-dir: ./output
+
+# ═══ NVIDIA NIM Vision API ═══
+nvidia:
+  api-key: ${NVIDIA_API_KEY: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}
+  base-url: https://integrate.api.nvidia.com/v1
+  vision-model: google/gemma-4-31b-it
+  timeout: 60
+
+# ═══ 排程設定 ═══
+scheduler:
+  # 預設：週一到週五 每天早上 8:00 執行
+  cron: "0 0 8 * * MON-FRI"
+  enabled: true
+
+# ═══ Logging ═══
+logging:
+  level:
+    root: INFO
+    tw.gov.pcc: INFO
+  file:
+    name: ./logs/scraper.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %level - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} - %level - [%thread] %logger{36} - %msg%n"

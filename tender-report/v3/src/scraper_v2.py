@@ -6,9 +6,11 @@
 import asyncio
 import logging
 import os
+import random
 import re
 import time
 from datetime import datetime, timedelta
+from itertools import combinations
 from urllib.parse import urlencode
 
 import pandas as pd
@@ -16,11 +18,9 @@ from playwright.async_api import async_playwright, Page, BrowserContext
 
 from config import (
     KEYWORDS, BASE_URL, HEADERS, OUTPUT_DIR, OUTPUT_FILE,
-    CAPTCHA_MAX_RETRIES, REQUEST_DELAY, FILTER_PROCUREMENT_TYPE,
-    NVIDIA_API_KEY, NVIDIA_VISION_MODEL,
+    REQUEST_DELAY, FILTER_PROCUREMENT_TYPE,
 )
 from detail_parser import parse_detail_page, extract_key_fields
-from captcha_solver import solve_captcha_with_nvidia
 
 logger = logging.getLogger(__name__)
 
@@ -29,11 +29,12 @@ class TenderScraperV2:
     def __init__(self, headless: bool = False):
         """
         Args:
-            headless: 是否無頭模式
+            headless: 是否無頭模式（建議 False 以便觀察驗證碼）
         """
         self.headless = headless
         self.data = []           # 列表頁基本資料
         self.detail_data = []    # 詳細頁資料
+        self.keyword_counts = {} # 每個關鍵字的筆數
         self.errors = []
         self.browser = None
         self.context = None
@@ -195,11 +196,11 @@ class TenderScraperV2:
 
     async def solve_captcha_and_get_detail(self, page: Page, tender: dict) -> dict | None:
         """
-        直接 navigate 到 detail URL → 處理撲克牌驗證碼（整頁形式）→ 取得詳細頁資料
+        直接 navigate 到 detail URL → 處理撲克牌驗證碼（窮舉法）→ 取得詳細頁資料
 
         流程：
         1. page.goto(detail_url) → 出現撲克牌 CAPTCHA 整頁
-        2. 截圖整頁 → Vision AI 辨識 A區/B區配對
+        2. 窮舉 C(6,2)=15 種組合嘗試配對
         3. 點擊 B區匹配的牌 → 確認送出
         4. 成功後頁面跳轉到詳細頁 → 解析
 
@@ -248,93 +249,48 @@ class TenderScraperV2:
             logger.info(f"  未知頁面截圖: {debug_path}")
             return None
 
-        # ── Vision AI 辨識模式 ──
-        for attempt in range(CAPTCHA_MAX_RETRIES):
-            logger.info(f"  驗證碼嘗試 {attempt + 1}/{CAPTCHA_MAX_RETRIES}")
+        # ── 隨機窮舉法：每次隨機選 C(6,2) 中的一種組合，直到成功 ──
+        # 伺服器每次提交失敗後會更換驗證碼，每次命中率 1/15
+        all_combos = list(combinations(range(6), 2))
+        attempt = 0
 
-            # 整頁截圖（CAPTCHA 是整頁呈現，不是 modal）
-            screenshot_bytes = await page.screenshot(full_page=True)
+        while True:
+            attempt += 1
+            combo = random.choice(all_combos)
+            logger.info(f"  窮舉法嘗試 {attempt}，隨機選擇: 索引 {combo}")
 
-            # 儲存截圖（除錯用）
-            debug_dir = os.path.join(OUTPUT_DIR, "debug")
-            os.makedirs(debug_dir, exist_ok=True)
-            debug_path = os.path.join(debug_dir, f"captcha_{case_no}_{attempt}.png")
-            with open(debug_path, 'wb') as f:
-                f.write(screenshot_bytes)
-            logger.info(f"  驗證碼截圖已儲存: {debug_path}")
-
-            # 呼叫 NVIDIA Vision AI 辨識
-            matches = solve_captcha_with_nvidia(
-                image_bytes=screenshot_bytes,
-                api_key=NVIDIA_API_KEY,
-                model=NVIDIA_VISION_MODEL,
-            )
-
-            if not matches:
-                logger.warning(f"  Vision AI 未回傳配對結果，重試...")
-                refresh_btn = await page.query_selector('text=重新產生')
-                if not refresh_btn:
-                    refresh_btn = await page.query_selector('text=重新整理')
+            # 取得 B區 checkboxes
+            b_checkboxes = await page.query_selector_all('input[name="choose"]')
+            if len(b_checkboxes) < 6:
+                logger.warning(f"  B區牌數不足: {len(b_checkboxes)}，嘗試重新整理")
+                refresh_btn = await page.query_selector('#b_refresh, text=重新整理, text=重新產生')
                 if refresh_btn:
                     await refresh_btn.click()
                     await page.wait_for_timeout(2000)
                 continue
 
-            # 點擊 B區匹配的牌
-            b_cards = await page.query_selector_all('input[name="choose"]')
-            if b_cards:
-                b_labels = []
-                for cb in b_cards:
-                    cb_id = await cb.get_attribute('id')
-                    if cb_id:
-                        label = await page.query_selector(f'label[for="{cb_id}"]')
-                        if label:
-                            b_labels.append(label)
-                if b_labels:
-                    b_cards = b_labels
-                    logger.info(f"  透過 checkbox name='choose' 找到 {len(b_cards)} 張 B區牌")
+            # 透過 JavaScript 清除所有 checkbox 狀態
+            for cb in b_checkboxes:
+                await cb.evaluate('el => el.checked = false')
 
-            if not b_cards:
-                b_cards = await page.query_selector_all('#cardB img, .areaB img, [id*="cardB"] img')
-            if not b_cards:
-                b_cards = await page.query_selector_all('img[onclick*="selectCard"], img[onclick*="select"]')
-            if not b_cards:
-                all_imgs = await page.query_selector_all('img')
-                clickable_imgs = []
-                for img in all_imgs:
-                    onclick = await img.get_attribute('onclick')
-                    cls = await img.get_attribute('class') or ''
-                    src = await img.get_attribute('src') or ''
-                    if onclick or 'card' in cls.lower() or 'card' in src.lower() or 'poker' in src.lower():
-                        clickable_imgs.append(img)
-                if len(clickable_imgs) >= 8:
-                    b_cards = clickable_imgs[2:]
-                elif len(clickable_imgs) >= 6:
-                    b_cards = clickable_imgs
-
-            if not b_cards:
-                debug_dir = os.path.join(OUTPUT_DIR, "debug")
-                os.makedirs(debug_dir, exist_ok=True)
-                html_dump = await page.content()
-                dump_path = os.path.join(debug_dir, f"captcha_html_{case_no}_{attempt}.html")
-                with open(dump_path, 'w', encoding='utf-8') as f:
-                    f.write(html_dump)
-                logger.warning(f"  仍找不到 B區牌元素，已 dump HTML: {dump_path}")
-                continue
-
-            logger.info(f"  找到 {len(b_cards)} 張 B區牌，需點擊索引: {matches}")
-
-            for idx in matches:
-                if idx < len(b_cards):
-                    await b_cards[idx].click()
-                    await page.wait_for_timeout(500)
-                    logger.info(f"  已點擊 B區第 {idx} 張牌")
+            # 點擊選中的兩張牌的 label
+            for idx in combo:
+                cb_id = await b_checkboxes[idx].get_attribute('id')
+                if cb_id:
+                    label = await page.query_selector(f'label[for="{cb_id}"]')
+                    if label:
+                        await label.click()
+                        await page.wait_for_timeout(300)
+                    else:
+                        await b_checkboxes[idx].evaluate('el => el.checked = true')
                 else:
-                    logger.warning(f"  索引 {idx} 超出 B區牌數 {len(b_cards)}")
+                    await b_checkboxes[idx].evaluate('el => el.checked = true')
+                logger.info(f"  已選擇 B區第 {idx} 張牌")
 
-            submit_btn = await page.query_selector('text=確認送出')
+            # 點擊「確認送出」
+            submit_btn = await page.query_selector('#b_submit, input[value="確認送出"]')
             if not submit_btn:
-                submit_btn = await page.query_selector('input[value="確認送出"], button:has-text("送出")')
+                submit_btn = await page.query_selector('button:has-text("送出")')
             if submit_btn:
                 await submit_btn.click()
                 logger.info(f"  已點擊確認送出")
@@ -342,31 +298,28 @@ class TenderScraperV2:
                 logger.warning(f"  找不到確認送出按鈕")
                 continue
 
+            # 等待頁面回應
             await page.wait_for_timeout(3000)
-            await page.wait_for_load_state('networkidle', timeout=10000)
+            try:
+                await page.wait_for_load_state('networkidle', timeout=10000)
+            except Exception:
+                pass
 
+            # 檢查是否驗證成功
             new_text = await page.text_content('body') or ''
-            current_url = page.url
 
             if '機關資料' in new_text or '招標資料' in new_text or '機關代碼' in new_text:
-                logger.info(f"  ✓ 驗證碼通過，成功取得詳細頁")
+                logger.info(f"  ✓ 窮舉法驗證碼通過！組合: {combo}，嘗試次數: {attempt}")
                 html = await page.content()
                 return parse_detail_page(html)
 
+            # 還在 CAPTCHA 頁 = 該組合不對，繼續
             if 'A區' in new_text or '撲克牌' in new_text or '驗證' in new_text:
-                logger.warning(f"  驗證失敗，重試...")
-                refresh_btn = await page.query_selector('text=重新產生')
-                if not refresh_btn:
-                    refresh_btn = await page.query_selector('text=重新整理')
-                if refresh_btn:
-                    await refresh_btn.click()
-                    await page.wait_for_timeout(2000)
+                logger.info(f"  組合 {combo} 未通過，繼續嘗試...")
                 continue
 
-            logger.warning(f"  未知驗證結果，URL: {current_url}")
-
-        logger.error(f"  ✗ 驗證碼嘗試 {CAPTCHA_MAX_RETRIES} 次均失敗: {case_no}")
-        return None
+            # 未知狀態
+            logger.warning(f"  未知驗證結果，URL: {page.url}")
 
     async def scrape_all(self):
         """主流程：爬取所有關鍵字"""
@@ -386,6 +339,7 @@ class TenderScraperV2:
         for i, keyword in enumerate(KEYWORDS, 1):
             logger.info(f"進度: {i}/{len(KEYWORDS)}")
             tenders = await self.scrape_list_page(page, keyword)
+            self.keyword_counts[keyword] = len(tenders)
 
             for j, tender in enumerate(tenders):
                 tender['_row_idx'] = j
@@ -425,7 +379,7 @@ class TenderScraperV2:
             logger.warning(f"錯誤: {len(self.errors)} 個關鍵字")
 
     def export_to_excel(self):
-        """匯出 Excel"""
+        """匯出 Excel（PCC 含連結版格式）"""
         data_to_export = self.detail_data if self.detail_data else self.data
         if not data_to_export:
             logger.warning("沒有資料可匯出")
@@ -434,11 +388,13 @@ class TenderScraperV2:
         try:
             os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-            # 整理匯出欄位
+            # 整理匯出欄位（11 欄，對齊範本格式）
             export_rows = []
-            for idx, item in enumerate(data_to_export, 1):
+            detail_urls = []  # 保存 detail URL 供後續加超連結
+            for item in data_to_export:
+                detail_url = item.get('_detail_url', '')
                 row = {
-                    '項次': idx,
+                    '項次': item.get('關鍵字', ''),
                     '機關名稱': item.get('機關名稱', ''),
                     '標案案號': item.get('標案案號', ''),
                     '標案名稱': item.get('標案名稱', ''),
@@ -448,31 +404,16 @@ class TenderScraperV2:
                     '公告日期': item.get('公告日期', item.get('公告日', '')),
                     '截止投標': item.get('截止投標', ''),
                     '預算金額': item.get('預算金額', ''),
-                    # 詳細頁欄位
-                    '機關代碼': item.get('機關代碼', ''),
-                    '單位名稱': item.get('單位名稱', ''),
-                    '機關地址': item.get('機關地址', ''),
-                    '聯絡人': item.get('聯絡人', ''),
-                    '聯絡電話': item.get('聯絡電話', ''),
-                    '電子郵件信箱': item.get('電子郵件信箱', ''),
-                    '標的分類': item.get('標的分類', ''),
-                    '採購金額級距': item.get('採購金額級距', ''),
-                    '辦理方式': item.get('辦理方式', ''),
-                    '決標方式': item.get('決標方式', ''),
-                    '招標狀態': item.get('招標狀態', ''),
-                    '開標時間': item.get('開標時間', ''),
-                    '開標地點': item.get('開標地點', ''),
-                    '是否訂有底價': item.get('是否訂有底價', ''),
-                    '履約地點': item.get('履約地點', ''),
-                    '關鍵字': item.get('關鍵字', ''),
+                    '詳細連結': detail_url,
                 }
                 export_rows.append(row)
+                detail_urls.append(detail_url)
 
             df = pd.DataFrame(export_rows)
 
             with pd.ExcelWriter(OUTPUT_FILE, engine='openpyxl') as writer:
                 df.to_excel(writer, sheet_name='招標資料', index=False)
-                self._style_excel(writer)
+                self._style_excel(writer, detail_urls)
 
             logger.info(f"已匯出: {OUTPUT_FILE} ({len(export_rows)} 筆)")
             return True
@@ -483,37 +424,58 @@ class TenderScraperV2:
             traceback.print_exc()
             return False
 
-    def _style_excel(self, writer):
-        """Excel 樣式"""
-        from openpyxl.styles import Border, Side, PatternFill, Font, Alignment
-        from openpyxl.utils import get_column_letter
+    def _style_excel(self, writer, detail_urls):
+        """Excel 樣式（PCC 含連結版格式）"""
+        from openpyxl.styles import Border, Side, Font, Alignment
+        from openpyxl.worksheet.hyperlink import Hyperlink
 
         ws = writer.sheets['招標資料']
+
+        # 範本欄寬
+        col_widths = {
+            'A': 18,    # 項次
+            'B': 31,    # 機關名稱
+            'C': 22,    # 標案案號
+            'D': 72,    # 標案名稱
+            'E': 13,    # 傳輸次數
+            'F': 13,    # 招標方式
+            'G': 13,    # 採購性質
+            'H': 13,    # 公告日期
+            'I': 13,    # 截止投標
+            'J': 13.5,  # 預算金額
+            'K': 13,    # 詳細連結
+        }
+        for col_letter, width in col_widths.items():
+            ws.column_dimensions[col_letter].width = width
+
+        # 字體定義
+        base_font = Font(name='新細明體', size=12)
+        header_font = Font(name='新細明體', size=12, bold=True)
+        link_font = Font(name='新細明體', size=12, underline='single', color='0563C1')
         thin_border = Border(
             left=Side(style='thin'), right=Side(style='thin'),
             top=Side(style='thin'), bottom=Side(style='thin')
         )
-        header_fill = PatternFill(start_color='92D050', end_color='92D050', fill_type='solid')
-        header_font = Font(bold=True, color='000000')
         header_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        cell_align = Alignment(vertical='center', wrap_text=False)
 
-        max_lengths = {}
         for row_idx, row in enumerate(ws.iter_rows(min_row=1, max_row=ws.max_row, min_col=1, max_col=ws.max_column), 1):
             for col_idx, cell in enumerate(row, 1):
-                col_letter = get_column_letter(col_idx)
-                if cell.value:
-                    length = len(str(cell.value))
-                    max_lengths[col_letter] = max(max_lengths.get(col_letter, 0), length)
                 cell.border = thin_border
                 if row_idx == 1:
-                    cell.fill = header_fill
                     cell.font = header_font
                     cell.alignment = header_align
                 else:
-                    cell.alignment = Alignment(vertical='center', wrap_text=True)
+                    cell.font = base_font
+                    cell.alignment = cell_align
 
-        for col_letter, max_length in max_lengths.items():
-            ws.column_dimensions[col_letter].width = min(max_length * 1.5 + 2, 50)
+        # 標案名稱 (D 欄) 加超連結
+        for data_row_idx, url in enumerate(detail_urls):
+            if url:
+                cell = ws.cell(row=data_row_idx + 2, column=4)  # D 欄, +2 跳過 header
+                cell.hyperlink = Hyperlink(ref=cell.coordinate, target=url)
+                cell.font = link_font
+
         ws.row_dimensions[1].height = 30
 
 
@@ -535,6 +497,7 @@ async def main():
             page = await scraper.context.new_page()
             for keyword in KEYWORDS:
                 tenders = await scraper.scrape_list_page(page, keyword)
+                scraper.keyword_counts[keyword] = len(tenders)
                 scraper.data.extend(tenders)
                 await page.wait_for_timeout(REQUEST_DELAY * 1000)
             scraper.detail_data = scraper.data
@@ -542,6 +505,15 @@ async def main():
             await scraper.scrape_all()
 
         scraper.export_to_excel()
+
+        # 寄送郵件
+        if not args.list_only:
+            from mail_sender import send_report_email
+            send_report_email(
+                excel_path=OUTPUT_FILE,
+                keyword_counts=scraper.keyword_counts,
+                total=len(scraper.detail_data),
+            )
 
     except KeyboardInterrupt:
         logger.warning("使用者中斷")
