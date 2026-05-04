@@ -227,6 +227,26 @@ class PaddleOCRHandler(OCRHandler):
         return output
 
 
+def _detect_and_trim_repetition(text: str, window: int = 8, threshold: int = 6) -> str:
+    """
+    偵測並截斷 AI 幻覺產生的重複文字。
+    若連續 window 個字中，同一字出現超過 threshold 次，視為重複開始點並截斷。
+    """
+    if not text or len(text) < window * 2:
+        return text
+
+    for i in range(len(text) - window):
+        chunk = text[i:i + window]
+        # 計算 chunk 中最高頻的字出現幾次
+        most_common_count = max(chunk.count(c) for c in set(chunk))
+        if most_common_count >= threshold:
+            trimmed = text[:i].rstrip()
+            log(f"⚠ 偵測到重複內容（幻覺），截斷於第 {i} 字（原始 {len(text)} 字 → 保留 {len(trimmed)} 字）", "WARN")
+            return trimmed
+
+    return text
+
+
 # ==================== NVIDIA Vision AI OCR ====================
 class NvidiaVisionOCRHandler(OCRHandler):
     """NVIDIA NIM Vision AI 實作（直接回傳純文字，不需欄位重組）"""
@@ -235,7 +255,7 @@ class NvidiaVisionOCRHandler(OCRHandler):
     NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
     DEFAULT_MODEL = "nvidia/llama-3.2-90b-vision-instruct"
 
-    def __init__(self, api_key: str, model: str = DEFAULT_MODEL):
+    def __init__(self, api_key: str, model: str = DEFAULT_MODEL, max_tokens: int = 1024):
         try:
             from openai import OpenAI
             self.client = OpenAI(
@@ -246,28 +266,38 @@ class NvidiaVisionOCRHandler(OCRHandler):
             raise ImportError("openai 未安裝，請執行: pip install openai")
 
         self.model = model
-        log(f"NVIDIA Vision AI 初始化 (model={model})")
+        self.max_tokens = max_tokens
+        log(f"NVIDIA Vision AI 初始化 (model={model}, max_tokens={max_tokens})")
 
     def recognize(self, image_path: str) -> List[Dict]:
         """Vision AI 不使用此方法，請用 recognize_text()"""
         raise NotImplementedError
 
     def recognize_text(self, image_path: str) -> str:
-        """\u5c07圖片以 base64 傳給 NVIDIA Vision API，回傳整理後的直排文字"""
+        """將圖片以 base64 傳給 NVIDIA Vision API，回傳整理後的直排文字（含防幻覺機制）"""
         import base64
 
         with open(image_path, 'rb') as f:
             img_b64 = base64.standard_b64encode(f.read()).decode('utf-8')
 
-        # 判斷圖片類型
         suffix = Path(image_path).suffix.lower()
         mime = 'image/png' if suffix == '.png' else 'image/jpeg'
 
         prompt = (
-            "請辨識這張圖片中的中文內容。"
-            "內容為繁體中文直排書籍，閱讀順序為由右至左、每欄由上至下。"
-            "請按正確的閱讀順序輸出所有文字，"
-            "不要加入任何解釋、標題或格式符號，只輸出原文內容。"
+            "你是一個專業的古籍 OCR 引擎。請嚴格按照以下規則辨識圖片中的中文文字：\n\n"
+            "【版面規則】\n"
+            "- 繁體中文直排書籍掃描圖，閱讀順序為「由右至左、由上至下」。\n"
+            "- 若為雙頁對開，請先完整辨識右頁所有欄位，再辨識左頁所有欄位。\n"
+            "- 每欄文字由上到下連續輸出。\n\n"
+            "【輸出規則 - 非常重要】\n"
+            "1. 只輸出你能清楚辨識的文字，不要猜測或編造內容。\n"
+            "2. 無法辨識或模糊的字，用一個「□」符號代替，不要重複前後文字。\n"
+            "3. 不要輸出任何解釋、標題、註解或格式標記。\n"
+            "4. 每個段落的文字之間以空行分隔。\n"
+            "5. 輸出總字數若超過 800 字，請自行截斷並標記「【以下省略】」。\n\n"
+            "【輸出範例】\n"
+            "天地玄黃宇宙洪荒日月盈昃辰宿列張\n寒來暑往秋收冬藏閏餘成歲律呂調陽\n\n"
+            "現在請開始辨識，只輸出文字內容："
         )
 
         try:
@@ -283,13 +313,38 @@ class NvidiaVisionOCRHandler(OCRHandler):
                         {"type": "text", "text": prompt},
                     ],
                 }],
-                temperature=0.1,
-                max_tokens=4096,
+                temperature=0.0,
+                max_tokens=self.max_tokens,
+                top_p=0.1,
+                frequency_penalty=0.5,
+                presence_penalty=0.2,
             )
-            return response.choices[0].message.content.strip()
+            result = response.choices[0].message.content.strip()
+            log(f"  📊 原始回傳: {len(result)} 字")
+
+            # 後處理：截斷幻覺 + 清理重複模式
+            result = _detect_and_trim_repetition(result)
+            result = self._clean_repetition(result)
+            return result
         except Exception as e:
             log(f"Vision API 調用失敗: {e}", "ERROR")
             return ""
+
+    def _clean_repetition(self, text: str) -> str:
+        """清理重複的文字模式（常見於 Vision LLM 幻覺）"""
+        # 移除連續重複的單字（6 次以上）
+        text = re.sub(r'(.)\1{5,}', r'\1', text)
+
+        # 偵測大段重複模式，從長到短
+        for length in [20, 10, 5]:
+            pattern = re.compile(r'(.{' + str(length) + r',}?)\1{2,}')
+            while True:
+                match = pattern.search(text)
+                if not match:
+                    break
+                text = text[:match.start()] + match.group(1) + text[match.end():]
+
+        return text
 
 
 class TesseractOCRHandler(OCRHandler):
@@ -404,8 +459,8 @@ def reconstruct_vertical_text(
         if col_text:
             paragraphs.append(col_text)
     
-    # 直排轉為段落：每欄為一段（或依標點進一步斷句）
-    return "。".join(paragraphs) + "。" if paragraphs else ""
+    # 直排轉為段落：每欄直接串接（欄位本身已含原文標點）
+    return "".join(paragraphs) if paragraphs else ""
 
 
 def reconstruct_horizontal_text(
@@ -455,18 +510,24 @@ body {
 '''
     if vertical_mode:
         css_content += '''
-/* 直排模式 */
-.vertical-rl {
-    writing-mode: vertical-rl;      /* 由右至左直排 */
-    text-orientation: upright;       /* 文字直立（非旋轉） */
-    letter-spacing: 0.1em;
+/* 直排模式：在 html/body 層級設定，確保閱讀器正確排版 */
+html {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    -epub-writing-mode: vertical-rl;
 }
-.vertical-rl p {
+body {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    -epub-writing-mode: vertical-rl;
+    text-orientation: mixed;         /* 漢字直立，標點與英數依字型旋轉 */
+    -webkit-text-orientation: mixed;
+}
+p {
     margin: 0 0.5em;
     text-indent: 0;                  /* 直排不需首行縮排 */
 }
-.vertical-rl h2 {
-    writing-mode: horizontal-tb;     /* 標題保持橫排 */
+h2 {
     text-align: center;
     margin: 1em 0;
 }
@@ -488,12 +549,9 @@ h2 { text-align: center; }
     
     # 標題頁
     title_page = epub.EpubHtml(title='封面', file_name='title.xhtml', lang='zh-TW')
-    title_class = 'vertical-rl' if vertical_mode else ''
     title_page.content = f'''
-<div {f'class="{title_class}"' if vertical_mode else ''}>
-    <h1>{title}</h1>
-    <p style="text-align:center;">{author}</p>
-</div>
+<h1>{title}</h1>
+<p style="text-align:center;">{author}</p>
 '''
     title_page.add_item(css)
     book.add_item(title_page)
@@ -529,9 +587,7 @@ h2 { text-align: center; }
             
             ch.content = f'''
 <h2>{ch_title}</h2>
-<div class="vertical-rl">
-    {''.join(paragraphs)}
-</div>
+{''.join(paragraphs)}
 '''
         else:
             # 橫排：一般段落
@@ -549,6 +605,10 @@ h2 { text-align: center; }
     book.add_item(epub.EpubNcx())
     book.add_item(epub.EpubNav())
     book.spine = spine
+    
+    # 直排書需設定翻頁方向為由右至左
+    if vertical_mode:
+        book.set_direction('rtl')
     
     # 輸出
     safe_title = re.sub(r'[\\/:*?"<>|]', '_', title)
@@ -599,18 +659,30 @@ def generate_cover(title: str, author: str) -> str:
 
 # ==================== 主流程 ====================
 def download_images_to_local(img_urls: List[str], output_dir: Path = TEMP_DIR) -> List[str]:
-    """下載圖片到本地，回傳本地路徑列表"""
+    """下載圖片到本地，回傳本地路徑列表（已存在的圖片會跳過）"""
     local_paths = []
+    skipped = 0
     for i, url in enumerate(img_urls):
+        # 先判斷副檔名
+        ext = '.png' if url.lower().endswith('.png') else '.jpg'
+        local_path = output_dir / f'page_{i+1:03d}{ext}'
+        
+        # 若檔案已存在且大小 > 0，跳過下載
+        if local_path.exists() and local_path.stat().st_size > 0:
+            local_paths.append(str(local_path))
+            skipped += 1
+            continue
+        
         try:
             resp = requests.get(url, headers=HEADERS, timeout=30)
             if resp.status_code == 200:
-                # 從 URL 或 Content-Type 判斷副檔名
-                ext = '.jpg'  # 預設
+                # 從 Content-Type 修正副檔名
                 if 'png' in resp.headers.get('Content-Type', ''):
                     ext = '.png'
+                    new_path = output_dir / f'page_{i+1:03d}{ext}'
+                    if new_path != local_path:
+                        local_path = new_path
                 
-                local_path = output_dir / f'page_{i+1:03d}{ext}'
                 with open(local_path, 'wb') as f:
                     f.write(resp.content)
                 local_paths.append(str(local_path))
@@ -618,6 +690,9 @@ def download_images_to_local(img_urls: List[str], output_dir: Path = TEMP_DIR) -
                 time.sleep(0.5)  # 避免請求過快
         except Exception as e:
             log(f"✗ 下載失敗 {url}: {e}", "WARN")
+    
+    if skipped:
+        log(f"⏩ 已跳過 {skipped} 張已存在的圖片，新下載 {len(local_paths) - skipped} 張")
     return local_paths
 
 
@@ -628,6 +703,8 @@ def process_scanned_book(
     max_pages: int = 250,
     api_key: Optional[str] = None,
     model: Optional[str] = None,
+    start_page: int = 1,
+    max_tokens: int = 1024,
 ) -> Optional[str]:
     """主處理流程"""
     
@@ -675,6 +752,7 @@ def process_scanned_book(
             ocr = NvidiaVisionOCRHandler(
                 api_key=api_key,
                 model=model or NvidiaVisionOCRHandler.DEFAULT_MODEL,
+                max_tokens=max_tokens,
             )
         elif ocr_engine == 'tesseract':
             ocr = TesseractOCRHandler()
@@ -696,8 +774,13 @@ def process_scanned_book(
         return None
     
     chapters = []
+    if start_page > 1:
+        log(f"⏩ 從第 {start_page} 頁開始 OCR（跳過前 {start_page - 1} 頁）")
     for i, img_path in enumerate(local_images):
-        log(f"OCR 處理 {i+1}/{len(local_images)}: {os.path.basename(img_path)}")
+        page_num = i + 1
+        if page_num < start_page:
+            continue
+        log(f"OCR 處理 {page_num}/{len(local_images)}: {os.path.basename(img_path)}")
         
         # 預處理（可選）
         if PIL_AVAILABLE:
@@ -709,6 +792,23 @@ def process_scanned_book(
         
         # OCR 辨識
         if ocr.is_vision_ai:
+            # 圖片過大時縮小，減少 token 消耗
+            if PIL_AVAILABLE:
+                try:
+                    with Image.open(img_path) as _img:
+                        w, h = _img.size
+                    max_dim = 1600
+                    if max(w, h) > max_dim:
+                        scale = max_dim / max(w, h)
+                        new_w, new_h = int(w * scale), int(h * scale)
+                        resized = Image.open(img_path).resize((new_w, new_h), Image.LANCZOS)
+                        temp_resized = str(TEMP_DIR / f'resized_{os.path.basename(img_path)}')
+                        resized.save(temp_resized)
+                        img_path = temp_resized
+                        log(f"  📐 圖片已縮小: {w}×{h} → {new_w}×{new_h}")
+                except Exception as e:
+                    log(f"  ⚠ 圖片縮小失敗: {e}", "WARN")
+
             # Vision AI 直接回傳整理後的文字，不需欄位重組
             text = ocr.recognize_text(img_path)
         else:
@@ -728,8 +828,11 @@ def process_scanned_book(
                 text = reconstruct_vertical_text(ocr_results, img_w)
         
         if text.strip():
-            chapters.append((f'第 {i+1} 頁', text))
+            # 後處理：移除連續重複單字（防殘留幻覺）
+            text = re.sub(r'(.)\1{5,}', r'\1', text)
+            chapters.append((f'第 {page_num} 頁', text))
             log(f"  ✓ 辨識完成 → {len(text)} 字")
+            log(f"  📝 內容: {text[:200]}{'...' if len(text) > 200 else ''}", "DEBUG")
         else:
             log(f"  ⚠ 未辨識到有效文字", "WARN")
     
@@ -790,6 +893,9 @@ def main():
     parser.add_argument('--model', default=NvidiaVisionOCRHandler.DEFAULT_MODEL,
                        help=f'NVIDIA 模型名稱（預設: {NvidiaVisionOCRHandler.DEFAULT_MODEL}）')
     parser.add_argument('--max-pages', type=int, default=250, help='最大處理頁數（防無限翻頁）')
+    parser.add_argument('--start-page', type=int, default=1, help='從第幾頁開始 OCR（預設: 1）')
+    parser.add_argument('--max-tokens', type=int, default=1024,
+                       help='Vision AI 每頁最大輸出 token 數（預設: 1024，避免幻覺重複）')
     parser.add_argument('--headless', action='store_true', default=True, help='Selenium 無頭模式（預設開啟）')
     
     args = parser.parse_args()
@@ -804,6 +910,8 @@ def main():
         max_pages=args.max_pages,
         api_key=args.api_key,
         model=args.model,
+        start_page=args.start_page,
+        max_tokens=args.max_tokens,
     )
     
     if result:
