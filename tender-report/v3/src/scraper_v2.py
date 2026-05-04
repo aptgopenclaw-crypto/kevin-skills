@@ -18,7 +18,7 @@ from playwright.async_api import async_playwright, Page, BrowserContext
 
 from config import (
     KEYWORDS, BASE_URL, HEADERS, OUTPUT_DIR, OUTPUT_FILE,
-    REQUEST_DELAY, FILTER_PROCUREMENT_TYPE,
+    REQUEST_DELAY, FILTER_PROCUREMENT_TYPE, KEYWORD_TO_SOLUTION,
 )
 from detail_parser import parse_detail_page, extract_key_fields
 
@@ -391,8 +391,11 @@ class TenderScraperV2:
             # 整理匯出欄位
             export_rows = []
             for idx, item in enumerate(data_to_export, 1):
+                keyword = item.get('關鍵字', '')
                 row = {
                     '項次': idx,
+                    '相關的Solution': KEYWORD_TO_SOLUTION.get(keyword, ''),
+                    '關鍵字': keyword,
                     '機關名稱': item.get('機關名稱', ''),
                     '標案案號': item.get('標案案號', ''),
                     '標案名稱': item.get('標案名稱', ''),
@@ -402,6 +405,7 @@ class TenderScraperV2:
                     '公告日期': item.get('公告日期', item.get('公告日', '')),
                     '截止投標': item.get('截止投標', ''),
                     '預算金額': item.get('預算金額', ''),
+                    '詳細連結': item.get('_detail_url', ''),
                     # 詳細頁欄位
                     '機關代碼': item.get('機關代碼', ''),
                     '單位名稱': item.get('單位名稱', ''),
@@ -418,7 +422,6 @@ class TenderScraperV2:
                     '開標地點': item.get('開標地點', ''),
                     '是否訂有底價': item.get('是否訂有底價', ''),
                     '履約地點': item.get('履約地點', ''),
-                    '關鍵字': item.get('關鍵字', ''),
                 }
                 export_rows.append(row)
 
@@ -450,6 +453,12 @@ class TenderScraperV2:
         header_fill = PatternFill(start_color='92D050', end_color='92D050', fill_type='solid')
         header_font = Font(bold=True, color='000000')
         header_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        link_font = Font(color='0563C1', underline='single')
+
+        # 找出「標案名稱」和「詳細連結」的欄位索引（1-based）
+        header_row = [cell.value for cell in ws[1]]
+        name_col = header_row.index('標案名稱') + 1 if '標案名稱' in header_row else None
+        url_col = header_row.index('詳細連結') + 1 if '詳細連結' in header_row else None
 
         max_lengths = {}
         for row_idx, row in enumerate(ws.iter_rows(min_row=1, max_row=ws.max_row, min_col=1, max_col=ws.max_column), 1):
@@ -465,6 +474,15 @@ class TenderScraperV2:
                     cell.alignment = header_align
                 else:
                     cell.alignment = Alignment(vertical='center', wrap_text=True)
+
+        # 為「標案名稱」加上超連結（連結到詳細連結欄位的 URL）
+        if name_col and url_col:
+            for row_idx in range(2, ws.max_row + 1):
+                url_cell = ws.cell(row=row_idx, column=url_col)
+                name_cell = ws.cell(row=row_idx, column=name_col)
+                if url_cell.value and name_cell.value:
+                    name_cell.hyperlink = str(url_cell.value)
+                    name_cell.font = link_font
 
         for col_letter, max_length in max_lengths.items():
             ws.column_dimensions[col_letter].width = min(max_length * 1.5 + 2, 50)

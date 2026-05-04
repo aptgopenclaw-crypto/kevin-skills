@@ -14,6 +14,7 @@ from email.mime.text import MIMEText
 from config import (
     MAIL_SMTP_HOST, MAIL_SMTP_PORT, MAIL_USER, MAIL_PASSWORD,
     MAIL_ALIAS, MAIL_RECIPIENTS, FILTER_PROCUREMENT_TYPE,
+    SOLUTION_KEYWORD_MAP, KEYWORD_TO_SOLUTION,
 )
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 def build_summary_html(keyword_counts: dict[str, int], total: int) -> str:
     """
-    產生 HTML 郵件內容
+    產生 HTML 郵件內容 — 依 Solution 分類顯示
 
     Args:
         keyword_counts: {關鍵字: 筆數}
@@ -30,13 +31,23 @@ def build_summary_html(keyword_counts: dict[str, int], total: int) -> str:
     today = date.today().strftime("%Y/%m/%d")
     filter_note = f"（採購性質：{FILTER_PROCUREMENT_TYPE}）" if FILTER_PROCUREMENT_TYPE else ""
 
+    # 依 Solution 彙總
+    solution_counts = {}
+    for solution, keywords in SOLUTION_KEYWORD_MAP.items():
+        count = sum(keyword_counts.get(kw, 0) for kw in keywords)
+        kw_display = ', '.join(f'"{kw}"' for kw in keywords)
+        solution_counts[solution] = {'count': count, 'keywords': kw_display}
+
     rows_html = ""
-    for keyword, count in keyword_counts.items():
+    for solution, info in solution_counts.items():
+        count = info['count']
+        keywords = info['keywords']
         color = "#333" if count > 0 else "#999"
         bold = "font-weight:bold;" if count > 0 else ""
         rows_html += f"""
         <tr>
-            <td style="padding:6px 12px;border:1px solid #ddd;{bold}color:{color}">{keyword}</td>
+            <td style="padding:6px 12px;border:1px solid #ddd;{bold}color:{color}">{solution}</td>
+            <td style="padding:6px 12px;border:1px solid #ddd;{bold}color:{color};font-size:12px">{keywords}</td>
             <td style="padding:6px 12px;border:1px solid #ddd;text-align:right;{bold}color:{color}">{count} 筆</td>
         </tr>"""
 
@@ -49,6 +60,7 @@ def build_summary_html(keyword_counts: dict[str, int], total: int) -> str:
         <table style="border-collapse:collapse;margin:16px 0">
             <thead>
                 <tr style="background:#2e6da4;color:#fff">
+                    <th style="padding:8px 12px;border:1px solid #ddd;text-align:left">相關產品</th>
                     <th style="padding:8px 12px;border:1px solid #ddd;text-align:left">關鍵字</th>
                     <th style="padding:8px 12px;border:1px solid #ddd;text-align:right">筆數</th>
                 </tr>
@@ -56,7 +68,7 @@ def build_summary_html(keyword_counts: dict[str, int], total: int) -> str:
             <tbody>
                 {rows_html}
                 <tr style="background:#f5f5f5;font-weight:bold">
-                    <td style="padding:8px 12px;border:1px solid #ddd">合計</td>
+                    <td style="padding:8px 12px;border:1px solid #ddd" colspan="2">合計</td>
                     <td style="padding:8px 12px;border:1px solid #ddd;text-align:right">{total} 筆</td>
                 </tr>
             </tbody>
