@@ -168,6 +168,43 @@ def preprocess_image(image_path: str) -> Optional[Image.Image]:
         return None
 
 
+def split_image_halves(image_path: str, output_dir: Path = TEMP_DIR) -> Tuple[Optional[str], Optional[str]]:
+    """
+    將雙頁對開掃描圖從中間垂直切分為右頁與左頁。
+    回傳 (right_path, left_path)；失敗時回傳 (None, None)。
+    """
+    if not PIL_AVAILABLE:
+        log("PIL 未安裝，無法切分圖片", "WARN")
+        return None, None
+    try:
+        img = Image.open(image_path)
+        w, h = img.size
+        mid = w // 2
+
+        base_name = Path(image_path).stem
+        ext = Path(image_path).suffix
+
+        # 邊緣裁剪：兩側各去除 8% 寬度，確保中縫黑影完全排除
+        margin_x = int(w * 0.08)
+        margin_y = int(h * 0.02)
+
+        # 注意：掃描圖中，書本翻開後右頁在圖片左半部，左頁在圖片右半部
+        right_page = img.crop((margin_x, margin_y, mid - margin_x, h - margin_y))
+        left_page = img.crop((mid + margin_x, margin_y, w - margin_x, h - margin_y))
+
+        right_path = str(output_dir / f'{base_name}_R{ext}')
+        left_path = str(output_dir / f'{base_name}_L{ext}')
+
+        right_page.save(right_path)
+        left_page.save(left_path)
+        rw, lw = mid - 2 * margin_x, w - mid - 2 * margin_x
+        log(f"  ✂ 圖片已切分（含邊裁）: {w}×{h} → 右頁 {rw}×{h - 2*margin_y}, 左頁 {lw}×{h - 2*margin_y}")
+        return right_path, left_path
+    except Exception as e:
+        log(f"圖片切分失敗: {e}", "WARN")
+        return None, None
+
+
 # ==================== OCR 辨識 ====================
 class OCRHandler:
     """OCR 處理抽象類別"""
@@ -255,7 +292,7 @@ class NvidiaVisionOCRHandler(OCRHandler):
     NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
     DEFAULT_MODEL = "nvidia/llama-3.2-90b-vision-instruct"
 
-    def __init__(self, api_key: str, model: str = DEFAULT_MODEL, max_tokens: int = 1024):
+    def __init__(self, api_key: str, model: str = DEFAULT_MODEL, max_tokens: int = 600):
         try:
             from openai import OpenAI
             self.client = OpenAI(
@@ -284,19 +321,22 @@ class NvidiaVisionOCRHandler(OCRHandler):
         mime = 'image/png' if suffix == '.png' else 'image/jpeg'
 
         prompt = (
-            "你是一個專業的古籍 OCR 引擎。請嚴格按照以下規則辨識圖片中的中文文字：\n\n"
-            "【版面規則】\n"
-            "- 繁體中文直排書籍掃描圖，閱讀順序為「由右至左、由上至下」。\n"
-            "- 若為雙頁對開，請先完整辨識右頁所有欄位，再辨識左頁所有欄位。\n"
-            "- 每欄文字由上到下連續輸出。\n\n"
+            "你是一個專業的古籍 OCR 引擎。這是一張繁體中文古籍的單頁掃描圖，請嚴格遵守以下順序辨識文字：\n\n"
+            "【閱讀順序規則 - 極為重要】\n"
+            "1. 從最右邊的那一列開始，由上至下讀取該列所有文字，讀完該列後換行。\n"
+            "2. 向左移至下一列，同樣由上至下讀取，讀完後再換行。\n"
+            "3. 依此類推，直到讀完最左邊的欄位。\n"
+            "4. 嚴禁橫向跨列讀取文字，嚴禁將不同列的文字混合在一起。\n\n"
             "【輸出規則 - 非常重要】\n"
             "1. 只輸出你能清楚辨識的文字，不要猜測或編造內容。\n"
             "2. 無法辨識或模糊的字，用一個「□」符號代替，不要重複前後文字。\n"
-            "3. 不要輸出任何解釋、標題、註解或格式標記。\n"
-            "4. 每個段落的文字之間以空行分隔。\n"
-            "5. 輸出總字數若超過 800 字，請自行截斷並標記「【以下省略】」。\n\n"
-            "【輸出範例】\n"
-            "天地玄黃宇宙洪荒日月盈昃辰宿列張\n寒來暑往秋收冬藏閏餘成歲律呂調陽\n\n"
+            "3. 嚴禁重複輸出相同的字句——每個字只能出現在它所在的欄位，輸出過的句子絕對不可再次出現。\n"
+            "4. 若某一列文字模糊不清無法辨識，請直接跳過該列，絕對不要用上一列的文字填充。\n"
+            "5. 不要輸出任何解釋、標題、註解或格式標記。\n"
+            "6. 輸出總字數若超過 800 字，請自行截斷並標記「【以下省略】」。\n\n"
+            "【輸出範例（每列一行）】\n"
+            "天地玄黃宇宙洪荒日月盈昃\n"
+            "寒來暑往秋收冬藏閏餘成歲\n\n"
             "現在請開始辨識，只輸出文字內容："
         )
 
@@ -315,9 +355,9 @@ class NvidiaVisionOCRHandler(OCRHandler):
                 }],
                 temperature=0.0,
                 max_tokens=self.max_tokens,
-                top_p=0.1,
-                frequency_penalty=0.5,
-                presence_penalty=0.2,
+                top_p=0.01,
+                frequency_penalty=2.0,
+                presence_penalty=0.1,
             )
             result = response.choices[0].message.content.strip()
             log(f"  📊 原始回傳: {len(result)} 字")
@@ -704,7 +744,8 @@ def process_scanned_book(
     api_key: Optional[str] = None,
     model: Optional[str] = None,
     start_page: int = 1,
-    max_tokens: int = 1024,
+    max_tokens: int = 600,
+    split_pages: bool = True,
 ) -> Optional[str]:
     """主處理流程"""
     
@@ -793,24 +834,43 @@ def process_scanned_book(
         # OCR 辨識
         if ocr.is_vision_ai:
             # 圖片過大時縮小，減少 token 消耗
-            if PIL_AVAILABLE:
+            def _resize_for_api(path: str) -> str:
+                if not PIL_AVAILABLE:
+                    return path
                 try:
-                    with Image.open(img_path) as _img:
+                    with Image.open(path) as _img:
                         w, h = _img.size
-                    max_dim = 1600
+                    max_dim = 2048
                     if max(w, h) > max_dim:
                         scale = max_dim / max(w, h)
                         new_w, new_h = int(w * scale), int(h * scale)
-                        resized = Image.open(img_path).resize((new_w, new_h), Image.LANCZOS)
-                        temp_resized = str(TEMP_DIR / f'resized_{os.path.basename(img_path)}')
-                        resized.save(temp_resized)
-                        img_path = temp_resized
+                        resized = Image.open(path).resize((new_w, new_h), Image.LANCZOS)
+                        resized_path = str(TEMP_DIR / f'resized_{Path(path).name}')
+                        resized.save(resized_path)
                         log(f"  📐 圖片已縮小: {w}×{h} → {new_w}×{new_h}")
+                        return resized_path
                 except Exception as e:
                     log(f"  ⚠ 圖片縮小失敗: {e}", "WARN")
+                return path
 
-            # Vision AI 直接回傳整理後的文字，不需欄位重組
-            text = ocr.recognize_text(img_path)
+            # 雙頁對開切分：先右頁再左頁，分別 OCR 後以 --- 串接
+            if split_pages and PIL_AVAILABLE:
+                right_path, left_path = split_image_halves(img_path)
+                if right_path and left_path:
+                    right_path = _resize_for_api(right_path)
+                    left_path = _resize_for_api(left_path)
+                    log(f"  🔍 OCR 右頁...")
+                    text_right = ocr.recognize_text(right_path)
+                    log(f"  🔍 OCR 左頁...")
+                    text_left = ocr.recognize_text(left_path)
+                    text = "\n---\n".join(t for t in [text_right, text_left] if t.strip())
+                else:
+                    img_path = _resize_for_api(img_path)
+                    text = ocr.recognize_text(img_path)
+            else:
+                img_path = _resize_for_api(img_path)
+                # Vision AI 直接回傳整理後的文字，不需欄位重組
+                text = ocr.recognize_text(img_path)
         else:
             ocr_results = ocr.recognize(img_path)
 
@@ -894,8 +954,10 @@ def main():
                        help=f'NVIDIA 模型名稱（預設: {NvidiaVisionOCRHandler.DEFAULT_MODEL}）')
     parser.add_argument('--max-pages', type=int, default=250, help='最大處理頁數（防無限翻頁）')
     parser.add_argument('--start-page', type=int, default=1, help='從第幾頁開始 OCR（預設: 1）')
-    parser.add_argument('--max-tokens', type=int, default=1024,
-                       help='Vision AI 每頁最大輸出 token 數（預設: 1024，避免幻覺重複）')
+    parser.add_argument('--max-tokens', type=int, default=600,
+                       help='Vision AI 每頁最大輸出 token 數（預設: 600，避免幻覺重複）')
+    parser.add_argument('--no-split', action='store_true', default=False,
+                       help='停用雙頁對開自動切分（預設啟用，適用於 Vision AI 引擎）')
     parser.add_argument('--headless', action='store_true', default=True, help='Selenium 無頭模式（預設開啟）')
     
     args = parser.parse_args()
@@ -912,6 +974,7 @@ def main():
         model=args.model,
         start_page=args.start_page,
         max_tokens=args.max_tokens,
+        split_pages=not args.no_split,
     )
     
     if result:
