@@ -39,7 +39,7 @@ def build_summary_html(keyword_counts: dict[str, int], total: int) -> str:
         solution_counts[solution] = {'count': count, 'keywords': kw_display}
 
     rows_html = ""
-    for solution, info in solution_counts.items():
+    for solution, info in sorted(solution_counts.items(), key=lambda x: x[1]['count'], reverse=True):
         count = info['count']
         keywords = info['keywords']
         color = "#333" if count > 0 else "#999"
@@ -66,11 +66,11 @@ def build_summary_html(keyword_counts: dict[str, int], total: int) -> str:
                 </tr>
             </thead>
             <tbody>
-                {rows_html}
                 <tr style="background:#f5f5f5;font-weight:bold">
                     <td style="padding:8px 12px;border:1px solid #ddd" colspan="2">合計</td>
                     <td style="padding:8px 12px;border:1px solid #ddd;text-align:right">{total} 筆</td>
                 </tr>
+                {rows_html}
             </tbody>
         </table>
 

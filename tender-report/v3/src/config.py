@@ -63,7 +63,7 @@ MAIL_SMTP_HOST = os.environ.get("O_MAILSER", "smtp.office365.com")
 MAIL_SMTP_PORT = int(os.environ.get("O_MAILPORT", "587"))
 MAIL_USER = os.environ.get("O_MAILUSER", "fetprivatenetwork@feto365.tw")
 MAIL_PASSWORD = os.environ.get("O_MAILPASS", "FET5gpns")
-MAIL_ALIAS = os.environ.get("O_ALIAS", "FetIotAlert")
+MAIL_ALIAS = os.environ.get("O_ALIAS", "政府採購公告")
 MAIL_RECIPIENTS = [
     "seanwang1@fareastone.com.tw",
     "juchuang@fareastone.com.tw",
@@ -71,4 +71,3 @@ MAIL_RECIPIENTS = [
     "ericyueh1@fareastone.com.tw",
     "sunnychou1@fareastone.com.tw",
 ]
-
