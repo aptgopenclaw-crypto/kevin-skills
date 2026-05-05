@@ -65,9 +65,5 @@ MAIL_USER = os.environ.get("O_MAILUSER", "fetprivatenetwork@feto365.tw")
 MAIL_PASSWORD = os.environ.get("O_MAILPASS", "FET5gpns")
 MAIL_ALIAS = os.environ.get("O_ALIAS", "政府採購公告")
 MAIL_RECIPIENTS = [
-    "seanwang1@fareastone.com.tw",
-    "juchuang@fareastone.com.tw",
     "kevinchang4@fareastone.com.tw",
-    "ericyueh1@fareastone.com.tw",
-    "sunnychou1@fareastone.com.tw",
 ]

@@ -7,9 +7,11 @@ import logging
 import os
 import smtplib
 from datetime import date
+from email.header import Header
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formataddr
 
 from config import (
     MAIL_SMTP_HOST, MAIL_SMTP_PORT, MAIL_USER, MAIL_PASSWORD,
@@ -106,7 +108,7 @@ def send_report_email(excel_path: str, keyword_counts: dict[str, int], total: in
 
     # 建立郵件
     msg = MIMEMultipart()
-    msg["From"] = f"{MAIL_ALIAS} <{MAIL_USER}>"
+    msg["From"] = formataddr((str(Header(MAIL_ALIAS, "utf-8")), MAIL_USER))
     msg["To"] = ", ".join(MAIL_RECIPIENTS)
     msg["Subject"] = subject
 
