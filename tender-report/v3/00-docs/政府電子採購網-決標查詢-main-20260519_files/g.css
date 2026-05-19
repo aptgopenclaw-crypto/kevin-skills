@@ -1,0 +1,411 @@
+.g_title {
+	background-color: #CDECFF;
+	text-align: left;
+}
+
+/* 友善列印頁*/
+.middle_1_cen_big_l2 {
+	float: left;
+	background: #fff;
+	border-radius: 10px;
+	padding: 20px;
+	box-sizing: border-box;
+	margin-top: 30px;
+	width: 850px;
+	min-height: 595px;
+}
+/* 查詢區塊下方的說明*/
+.g_search_note td {
+	padding: 0px;
+	border: 0px solid white !important;
+	vertical-align: top;
+	background-color:white;
+}
+/* 	blockUI對話框置中 */
+.g_table_center {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+/* 	table放table 去除框線 */
+.g_table_inculde_table {
+	width: 100%;
+	padding-right: 0px;
+	border: 0px;
+}
+/* 	變更日曆元件寬度 */
+.g_form-date {
+	width: 120px;
+	text-indent: 30px;
+}
+
+/* 	變更寬度 */
+.g_tbg_1_50 {
+	background-color: rgb(218, 235, 237) !important; /*淺灰色表格*/
+	width: 50px;
+}
+
+/* 	變更寬度 */
+.g_tbg_1_70 {
+	background-color: rgb(218, 235, 237) !important; /*淺藍色表格*/
+	width: 70px;
+}
+
+/* 	變更寬度 */
+.g_tbg_1_100 {
+	background-color: rgb(218, 235, 237) !important; /*淺藍色表格*/
+	width: 100px;
+}
+
+/* 	變更寬度 */
+.g_tbg_1_110 {
+	background-color: rgb(218, 235, 237) !important; /*淺藍色表格*/
+	width: 110px;
+}
+
+/* 	變更寬度 */
+.g_tbg_1_180 {
+	background-color: rgb(218, 235, 237) !important; /*淺藍色表格*/
+	width: 180px;
+}
+
+/* 	變更寬度 */
+.g_tbg_1_220 {
+	background-color: rgb(218, 235, 237) !important; /*淺藍色表格*/
+	width: 220px;
+}
+
+/* 	變更寬度 */
+.g_tbg_2_150 {
+	background-color: rgb(239, 241, 241)!important; /*淺灰色表格*/
+	width: 150px;
+	margin:0px 30px 0px 30px;
+}
+
+/* 	變更寬度 */
+.g_tbg_2_250 {
+	background-color: rgb(239, 241, 241)!important; /*淺灰色表格*/
+	width: 250px;
+}
+
+/* 	變更淺灰色表格寬度去除框線 */
+.g_tgb_border_gray {
+	border: rgb(239, 241, 241) !important;
+	border: 0px;
+	background-color: rgb(239, 241, 241) !important; /*淺灰色表格*/
+}
+
+/* 	變更淺灰色表格寬度白色框線 */
+.g_tgb_with_border_gray {
+	border: white 1px solid !important; /* 白色border */
+	background-color: rgb(239, 241, 241) !important; /*淺灰色表格*/
+	width: 20px;	
+}
+/* 	變更白色表格寬度去除框線 */
+.g_tgb_border_white {
+	border: rgb(239, 241, 241) !important;
+	border: 0px;
+	background-color: white!important; /*白色表格*/
+}
+/* 	變更寬度 */
+.g_w_110 {
+	width: 110px;
+}
+/* 	變更寬度 */
+.g_w_100 {
+	width: 100px;
+}
+/* 頁籤被選取時 cursor 變成禁止符號*/
+div.up a {
+	cursor: not-allowed;
+}
+/* 藍色table header灰色 */
+.g_table_title_gray {
+	background-color: rgb(244, 244, 244);
+}
+/* 藍色table context白色 */
+.g_table_context_gray {
+	background-color: rgb(255, 255, 255);
+}
+/* 藍色table th context淺灰色 */
+.g_table_border_gray th {
+	border: 1px solid rgb(206, 212, 218);
+	border-collapse: collapse;
+}
+/* 藍色table td context淺灰色 */
+.g_table_border_gray tr td {
+	border: 1px solid rgb(206, 212, 218);
+	border-collapse: collapse;
+}
+/* 藍色table 藍色button */
+.g_table_button_blue {
+	background-color: #39979f !important;
+}
+/* 藍色table 藍色button:hover */
+.g_table_button_blue:hover {
+	background-color: #1f868d !important;
+}
+/* 會議行事曆 時間欄位寬度  */
+#kalendar tr td ul li:first-child {
+	width: 5% !important;
+}
+/* 會議行事曆 非時間欄位寬度 */
+#kalendar tr#week td ul li:not(:first-child) {
+	width: 18.7% !important;
+}
+/* 會議行事曆 非時間欄位寬度 */
+#kalendar tr#day td ul li:not(:first-child) {
+	width: 18.7% !important;
+}
+/* 會議行事曆 高度 */
+.dayListHide0 {
+	height: 25px !important;
+}
+/* 會議行事曆 文字顏色 */
+.dayListHide0 li:not(:first-child) {
+	color: blue;
+	text-align: left !important;
+}
+/* 會議行事曆 背景顏色 */
+#kalendar tr td ul:nth-child(even) li {
+	background-color: #e8eee0 !important;
+}
+/* 	新增或修改成功後message下面空白td */
+.g_tbg_1{
+	height: 24px;
+	background-color: white;
+}
+
+/* 	新增或修改成功message  */
+.g_table_message {
+	background-color: #FFFFB5;
+	color: #FF6600;
+	font-size: larger;
+}
+
+/* table th 粗體 */
+div .tbs1  {
+	font-weight:bold;
+}
+/* table th 粗體 */
+.g_tb_01{
+	width: 100%;
+    padding: 5px;
+    border-collapse: collapse;
+    border-width: thin;	
+}
+.g_tb_01 table {
+	border-collapse: collapse;
+}
+
+/* table 文字強制換行 */
+.g_tb_01 tr td{
+    border: 1px solid #81b1c9; 
+	border-collapse: collapse;
+	word-break: break-all
+}
+.g_tb_01 th{
+    border: 1px solid #81b1c9; 
+	border-collapse: collapse;
+	font-weight: 900;
+}
+
+.g_th_b1{
+	font-weight: 900;
+    width: 40px;
+    text-align: center;
+}
+.g_th_b2{
+	font-weight: 900;
+    text-align: center;
+	    vertical-align: middle;
+}
+.g_th_b2_bottom{
+	font-weight: 900;
+    text-align: center;
+	vertical-align: bottom;
+}
+.g_th_b3{
+	font-weight: 900;
+    text-align: center;
+}
+
+/*美工頁面p標籤、label 標籤 加粗*/
+.g_tb_01 th p,.g_tb_01 th label{
+	font-weight: 900;
+}
+
+/* 	友善列印標題列  */
+.g_pringMessage{
+	background-color:#bad8e0;
+	color:#0869B0;
+	border:1px solid #98badc;
+	text-align:center;
+	padding:2px;
+}
+
+/* 	橘色框線  */
+.g_tb_04{
+    padding: 5px;
+    border: 1px solid rgb(255, 204, 102) !important;
+}
+
+/* 	粉紅色框線  */
+.g_tb_07{
+    padding: 5px;
+    border: 1px solid #ff9999  !important;
+}
+
+/* 	咖啡色框線  */
+.g_tb_09{
+    padding: 5px;
+    border: 1px solid #b08047 !important;
+}
+
+/* 	咖啡色框線+深咖啡色底色  */
+.g_tbg_L9{
+background-color: #cb9f6b !important; 
+border: 1px solid #b08047 !important;
+width: 10px;
+color: #000;
+}
+
+.g_margin_Right_Zero{
+	margin-right: 0px;
+}
+
+.g_f_3d{
+	float: left;
+	width: 20px;
+}
+
+.g_tbc2L{
+    float: left;
+	margin-right: 5px;
+	margin-top: 5px;
+}
+
+/*黃色表格*/
+.g_tb_04{
+	width: 100%;
+    padding: 5px;
+    border-collapse: collapse; 
+}
+.g_tb_04 table {
+	border-collapse: collapse;
+}
+.g_tb_04 tr td{
+    border: 1px solid rgb(255, 204, 102); 
+	border-collapse: collapse;
+}
+.g_tb_04 th{
+    border: 1px solid rgb(255, 204, 102); 
+	border-collapse: collapse;
+	font-weight: 900;
+}
+/*黃色表格*/
+
+/*for 看不見的@ 排版用*/
+.at3.hiddenAt{
+	visibility:hidden;
+}
+
+/*排版用 th 粗體*/
+.pure_thb{
+	font-weight:bold;
+	padding:5px;
+}
+
+/* 功能選項btn置中 */
+.g_tbc1{
+	width: 100%;
+	float: left;
+	margin-bottom: 10px;
+}
+
+/* 單行排序圖型置中 */
+.g_bt_cen1_l1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* 雙行排序圖型置中 */
+.g_bt_cen1_l2 {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.g_table_1 {
+    border-bottom: thin dashed #bab7b7;
+}
+
+.g_tbg_1_white{
+background-color: white!important; 
+width: 150px;
+}
+
+
+/* input small add yellow [tbg_4] 
+*  ex: g_form-control_sml tbg_4
+*/
+.g_form-control_sml{
+    height: 25px;
+    width: auto;
+	background-image: #FFFF99 !important;
+	border: 1px solid#ccc;
+	border-radius: 4px;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    color: #ababab;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+/* 綠色btn超連結(小) 加 [mysp2]
+*  ex: g_btn_4c_sml mysp2
+*/
+.g_btn_4c_sml{
+    background:#7bba16;
+	text-align: center;
+	color:#fff;
+    font-weight: 900;
+    padding: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    line-height: 27px;
+    height: 27px;
+    width: 100%;
+    box-sizing: border-box;
+    float: left;
+    font-size: 1em;
+    border-radius: 6px;
+    border-top-width: 1px;
+	border-top-style: solid;
+}
+
+/* 置右 */
+.g_to_right{
+	text-align: right;
+}
+
+/*原tb_s03於20210611改找標案跑版 刪除width屬性，會造成標案查詢頁面跑版 */
+.g_tb_s03{
+width: 237px;
+text-align: center;
+vertical-align:middle;
+
+
+
+/* 沒有 margin & padding 的按鈕*/
+.smallBtn{
+	margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.smallBtn a{
+	padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+}

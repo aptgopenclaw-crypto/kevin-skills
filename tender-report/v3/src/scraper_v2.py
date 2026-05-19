@@ -19,6 +19,7 @@ from playwright.async_api import async_playwright, Page, BrowserContext
 from config import (
     KEYWORDS, BASE_URL, HEADERS, OUTPUT_DIR, OUTPUT_FILE,
     REQUEST_DELAY, FILTER_PROCUREMENT_TYPE, KEYWORD_TO_SOLUTION,
+    SOLUTION_ORG_KEYWORD_MAP, ORG_ONLY_SOLUTIONS,
 )
 from detail_parser import parse_detail_page, extract_key_fields
 
@@ -69,7 +70,7 @@ class TenderScraperV2:
         start_date = end_date - timedelta(days=0)
         return start_date.strftime("%Y/%m/%d"), end_date.strftime("%Y/%m/%d")
 
-    def build_search_url(self, keyword: str) -> str:
+    def build_search_url(self, keyword: str = '', org_name: str = '') -> str:
         """建構搜尋 URL"""
         start_date, end_date = self.get_date_range()
         params = {
@@ -77,7 +78,7 @@ class TenderScraperV2:
             'searchType': 'basic',
             'isBinding': 'N',
             'isLogIn': 'N',
-            'orgName': '',
+            'orgName': org_name,
             'orgId': '',
             'tenderName': keyword,
             'tenderId': '',
@@ -91,10 +92,13 @@ class TenderScraperV2:
         }
         return f"{BASE_URL}?{urlencode(params)}"
 
-    async def scrape_list_page(self, page: Page, keyword: str) -> list[dict]:
+    async def scrape_list_page(self, page: Page, keyword: str = '', org_name: str = '', solution: str = '') -> list[dict]:
         """爬取搜尋列表頁，回傳標案列表"""
-        url = self.build_search_url(keyword)
-        logger.info(f"搜尋關鍵字: '{keyword}'")
+        url = self.build_search_url(keyword=keyword, org_name=org_name)
+        if org_name:
+            logger.info(f"搜尋機關名稱: '{org_name}'")
+        else:
+            logger.info(f"搜尋關鍵字: '{keyword}'")
 
         try:
             await page.goto(url, wait_until='networkidle', timeout=30000)
@@ -176,10 +180,12 @@ class TenderScraperV2:
 
         # 過濾採購性質
         filtered = []
+        sol = solution or KEYWORD_TO_SOLUTION.get(keyword, '')
         for t in tenders:
-            if FILTER_PROCUREMENT_TYPE and FILTER_PROCUREMENT_TYPE not in t.get('採購性質', ''):
+            if FILTER_PROCUREMENT_TYPE and not any(pt in t.get('採購性質', '') for pt in FILTER_PROCUREMENT_TYPE):
                 continue
-            t['關鍵字'] = keyword
+            t['關鍵字'] = keyword or org_name
+            t['_solution'] = sol
             # 拆分案號和名稱
             parts = t.get('標案案號_名稱', '').split('\n')
             parts = [p.strip() for p in parts if p.strip()]
@@ -191,7 +197,16 @@ class TenderScraperV2:
                 t['標案名稱'] = ' '.join(parts[1:]) if len(parts) > 1 else ''
             filtered.append(t)
 
-        logger.info(f"  關鍵字 '{keyword}': 找到 {len(tenders)} 筆，過濾後 {len(filtered)} 筆")
+        # 機關名稱過濾（AND 條件：僅限標案名稱搜尋的 Solution）
+        if keyword and not org_name:
+            org_keywords = SOLUTION_ORG_KEYWORD_MAP.get(sol, [])
+            if org_keywords:
+                before = len(filtered)
+                filtered = [t for t in filtered if any(ok in t.get('機關名稱', '') for ok in org_keywords)]
+                logger.info(f"  機關名稱過濾: {before} → {len(filtered)} 筆")
+
+        search_label = org_name or keyword
+        logger.info(f"  '{search_label}': 找到 {len(tenders)} 筆，過濾後 {len(filtered)} 筆")
         return filtered
 
     async def solve_captcha_and_get_detail(self, page: Page, tender: dict) -> dict | None:
@@ -331,14 +346,14 @@ class TenderScraperV2:
         logger.info("政府採購網招標資料爬蟲 V2（含詳細頁）")
         logger.info(f"關鍵字數量: {len(KEYWORDS)}")
         logger.info(f"查詢日期: {start_date} ~ {end_date}")
-        logger.info(f"過濾採購性質: {FILTER_PROCUREMENT_TYPE or '不過濾'}")
+        logger.info(f"過濾採購性質: {', '.join(FILTER_PROCUREMENT_TYPE) if FILTER_PROCUREMENT_TYPE else '不過濾'}")
         logger.info("=" * 60)
 
         all_tenders = []
 
         for i, keyword in enumerate(KEYWORDS, 1):
             logger.info(f"進度: {i}/{len(KEYWORDS)}")
-            tenders = await self.scrape_list_page(page, keyword)
+            tenders = await self.scrape_list_page(page, keyword=keyword)
             self.keyword_counts[keyword] = len(tenders)
 
             for j, tender in enumerate(tenders):
@@ -346,6 +361,19 @@ class TenderScraperV2:
                 all_tenders.append(tender)
 
             if i < len(KEYWORDS):
+                await page.wait_for_timeout(REQUEST_DELAY * 1000)
+
+        # 機關名稱搜尋（org-only solutions，無標案名稱關鍵字）
+        for sol in ORG_ONLY_SOLUTIONS:
+            org_names = SOLUTION_ORG_KEYWORD_MAP.get(sol, [])
+            logger.info(f"機關名稱搜尋 [{sol}]：共 {len(org_names)} 個機關")
+            for i_org, org in enumerate(org_names, 1):
+                logger.info(f"  機關 {i_org}/{len(org_names)}: {org}")
+                tenders = await self.scrape_list_page(page, org_name=org, solution=sol)
+                self.keyword_counts[org] = len(tenders)
+                for j, tender in enumerate(tenders):
+                    tender['_row_idx'] = j
+                    all_tenders.append(tender)
                 await page.wait_for_timeout(REQUEST_DELAY * 1000)
 
         self.data = all_tenders
@@ -392,9 +420,10 @@ class TenderScraperV2:
             export_rows = []
             for idx, item in enumerate(data_to_export, 1):
                 keyword = item.get('關鍵字', '')
+                solution = item.get('_solution') or KEYWORD_TO_SOLUTION.get(keyword, '')
                 row = {
                     '項次': idx,
-                    '相關的Solution': KEYWORD_TO_SOLUTION.get(keyword, ''),
+                    '相關的Solution': solution,
                     '關鍵字': keyword,
                     '機關名稱': item.get('機關名稱', ''),
                     '標案案號': item.get('標案案號', ''),
