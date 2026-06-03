@@ -1,0 +1,215 @@
+/* 公開取得電子報價單注意事項 */
+.note_tenderWay12 td,.note_tenderWay12 tr,.note_tenderWay12 table,.note_tenderWay12 th{
+	background-color: yellow !important;;	
+}
+
+/* 難字共用元件使用 */
+.hardWord{
+	height: 15px;
+	width: 15px;
+}
+
+/* 共用元件金額 */
+.budgetFisrtArea td{
+    padding-left: 0px;
+    border-left-width: 0px;
+} 
+
+
+/*....中間內容字級變動....*/
+.titlefont80{
+	font-weight: bold;
+	color: #FF6600;
+	font-family: "新細明體";
+	font-size:98%;
+	line-height: 20px;
+	text-decoration: none;
+	width:50px;
+}
+
+/* 共用元件-日期 */
+    .dateArea{ 
+    	display: inline-block; 
+    }  
+    .dateLine{ 
+		position: relative;
+    } 
+    .layui-icon{
+   		background:white !important;
+   		border:0px !important;
+    }
+
+   /*tabel欄位靠哪*/
+   .t_r{
+   	text-align:right;
+   }
+   
+/*    文字顏色 */
+	.form-control, .form-date{
+		color:black;
+	}
+	
+/* 	map筆數、金額小框 */
+#dypopLayer::before {
+    content: "各區域縣市筆數、金額";
+    width: 100%;
+    font-weight: 900;
+    color: rgb(0, 0, 0);
+    float: left;
+}
+#dypopLayer {
+    background-color: #F8F8F5;
+    border: 1px #000000 solid;
+    top: 370px;
+    position: relative;
+    right: px;
+    left: 606px;
+    width: 220px;
+    padding-bottom: 10px;
+    z-index: 1000;
+    height: 75px;
+    text-align: center;
+}
+/* map縣 最上藍色div , ex:台北市 */
+.T12b {
+    font-size: 12pt;
+    font-family: "新細明體";
+    color: #0869B0;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+/* err 錯誤訊息 */
+.error{
+	color: red;
+}
+#failureMessage{
+	 resize: none;
+	 min-height:95px;
+	 width:100%;
+	 text-align:center;
+	 padding:2px;
+	 color: red;
+	 border:0px;
+}
+/* all.css table hover 未吃到 */
+.tb_01 tr:hover{
+background-color: #FFD4AA;
+}
+/* 搜尋按鈕同列顯示 */
+.showSummaryBtn{
+	display: inline-block;
+}
+
+/*
+可排序的話加上箭頭背景， cursor : pointer
+*/
+table.tb_01 thead tr .sortable {
+cursor: pointer;
+}
+
+
+/* className(sortable、order1、order2)皆為displayTag所用之css(Sort用) */
+/* .tb_01 tr .sortable { */
+/* background-image: url(../images/3903.png); */
+/* background-repeat: no-repeat; */
+/* background-position: center right; */
+/* cursor: pointer; */
+/* } */
+
+
+/* 20200921 修改為圖片分開版本。 */
+table.tb_01 thead tr span.order1 {
+background-image: url(../images/3901.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;
+}
+
+
+table.tb_01 thead tr span.order2 {
+background-image: url(../images/3902.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;
+}
+
+table.tb_01 thead tr span.order1-1 {
+background-image: url(../images/3901-1.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;
+}
+
+
+table.tb_01 thead tr span.order2-1 {
+background-image: url(../images/3902-1.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;
+}
+
+table.tb_01 thead tr .sortable a, table.displayTag thead tr .order1 a, table.displayTag thead tr .order2 a{
+width: 100%;
+display:block;
+}
+
+.arr .order1{
+background-image: url(../images/3901.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;	
+}
+.arr .order1-1{
+background-image: url(../images/3901-1.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;
+}
+.arr .order2{
+background-image: url(../images/3902.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;	
+}
+.arr .order2-1{
+background-image: url(../images/3902-1.gif);
+background-repeat: no-repeat;
+background-position: center right;
+cursor: pointer;	
+}
+
+
+/* .tb_01 tr .order1 { */
+/* background-image: url(../images/3902-1.gif); */
+/* background-repeat: no-repeat; */
+/* background-position: center right; */
+/* cursor: pointer; */
+/* } */
+
+/* .tb_01 tr .order2 { */
+/* background-image: url(../images/3901-1.gif); */
+/* background-repeat: no-repeat; */
+/* background-position: center right; */
+/* cursor: pointer; */
+/* } */
+
+/* 外國政府採購商情detail */
+.single_data_table {
+	border: 1px solid #99ccff;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+.single_data_table tr th, .single_data_table thead tr th,
+	.single_data_table tbody tr th, .single_data_table tfoot tr th {
+	border: 1px solid #99ccff;
+	padding: 2px;
+	text-align: left;
+}
+
+.single_data_table tr td, .single_data_table tbody tr td,
+	.single_data_table thead tr td, .single_data_table tfoot tr td {
+	border: 1px solid #99ccff;
+	padding: 2px;
+	text-align: left;
+}

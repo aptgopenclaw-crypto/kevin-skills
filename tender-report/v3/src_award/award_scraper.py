@@ -40,6 +40,14 @@ def _clean(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _extract_amount(text: str) -> str:
+    """從金額字串中提取數字部分（保留逗號），例如 '1,792,776元 壹佰...' → '1,792,776'"""
+    if not text:
+        return ""
+    m = re.match(r"([\d,]+)", text.strip())
+    return m.group(1) if m else text
+
+
 def parse_award_detail(html: str) -> dict:
     """解析決標公告詳細頁 HTML，回傳結構化 dict。"""
     soup = BeautifulSoup(html, "lxml")
@@ -665,22 +673,17 @@ class AwardScraper:
                 # 決標公告日期：優先用詳細頁
                 "決標公告日期": item.get("決標公告日期", item.get("公告日期", "")),
                 "決標日期": item.get("決標日期", ""),
-                "預算金額": item.get("預算金額", ""),
-                "總決標金額": item.get("總決標金額", item.get("決標金額_列表", "")),
-                "底價金額": item.get("底價金額", ""),
-                "採購金額級距": item.get("採購金額級距", ""),
+                "預算金額": _extract_amount(item.get("預算金額", "")),
+                "總決標金額": _extract_amount(item.get("總決標金額", item.get("決標金額_列表", ""))),
+                "底價金額": _extract_amount(item.get("底價金額", "")),
                 "決標方式": item.get("決標方式", ""),
                 "決標資料類別": item.get("決標資料類別", ""),
                 "是否複數決標": item.get("是否複數決標", ""),
                 "投標廠商家數": item.get("投標廠商家數", ""),
                 "得標廠商名稱": item.get("得標廠商名稱", ""),
-                "得標廠商代碼": item.get("得標廠商代碼", ""),
-                "得標廠商決標金額": item.get("得標廠商決標金額", ""),
-                "得標廠商國別": item.get("得標廠商國別", ""),
-                "是否為中小企業": item.get("是否為中小企業", ""),
+                "得標廠商決標金額": _extract_amount(item.get("得標廠商決標金額", "")),
                 "履約起迄日期": item.get("履約起迄日期", ""),
                 # 機關聯絡資訊
-                "機關代碼": item.get("機關代碼", ""),
                 "單位名稱": item.get("單位名稱", ""),
                 "機關地址": item.get("機關地址", ""),
                 "聯絡人": item.get("聯絡人", ""),
@@ -688,8 +691,6 @@ class AwardScraper:
                 "傳真號碼": item.get("傳真號碼", ""),
                 "辦理方式": item.get("辦理方式", ""),
                 "履約地點": item.get("履約地點", ""),
-                "契約編號": item.get("契約編號", ""),
-                "是否刊登公報": item.get("是否刊登公報", ""),
                 "詳細連結": item.get("_detail_url", ""),
             }
             export_rows.append(row)
