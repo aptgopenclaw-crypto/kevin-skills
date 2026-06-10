@@ -42,6 +42,6 @@ test_env.py
 
 ## 重要文檔
 
-- README.md: 項目概述和使用指南
+- SKILL.md: 項目概述和使用指南
 - INSTALL.md: 詳細安裝和故障排除説明
 - requirements.txt: Python 依賴列表

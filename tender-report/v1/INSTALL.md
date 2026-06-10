@@ -218,7 +218,7 @@ OUTPUT_FILE = "output/招標資料.xlsx"
 .
 ├── main.py               # 爬蟲選擇器
 ├── requirements.txt      # Python 依賴列表
-├── README.md            # 本文件
+├── SKILL.md            # 本文件
 ├── INSTALL.md           # 安裝指南
 ├── .gitignore           # Git 忽略規則
 ├── src/

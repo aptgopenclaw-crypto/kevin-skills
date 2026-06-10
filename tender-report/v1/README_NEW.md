@@ -115,7 +115,7 @@ python main.py
 ├── main.py                      爬蟲方式選擇器
 ├── test_env.py                  環境測試腳本
 ├── requirements.txt             Python 依賴
-├── README.md                    本文件
+├── SKILL.md                    本文件
 ├── INSTALL.md                   詳細安裝指南
 ├── .gitignore                   Git 忽略規則
 ├── src/

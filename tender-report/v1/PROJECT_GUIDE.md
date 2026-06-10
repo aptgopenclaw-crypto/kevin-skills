@@ -36,7 +36,7 @@ d:\python-play\gov\
 ├── test_env.py                      # 環境檢查工具
 ├── requirements.txt                 # Python 依賴
 │
-├── README.md                        # 項目說明文檔
+├── SKILL.md                        # 項目說明文檔
 ├── INSTALL.md                       # 詳細安裝指南
 ├── QUICKSTART.md                    # 快速啟動命令
 ├── PROJECT_GUIDE.txt                # 本文件
@@ -205,7 +205,7 @@ pip install openpyxl --upgrade
 
 ## 文件說明
 
-- **README.md**：項目概述、功能介紹、使用指南
+- **SKILL.md**：項目概述、功能介紹、使用指南
 - **INSTALL.md**：詳細安裝步驟、故障排除、常見問題
 - **QUICKSTART.md**：快速啟動命令集合
 - **PROJECT_GUIDE.txt**：本文件，完整使用指南
@@ -223,7 +223,7 @@ MIT License
 
 ## 需要幫助？
 
-1. 查看 README.md 了解基本信息
+1. 查看 SKILL.md 了解基本信息
 2. 查看 INSTALL.md 了解詳細安裝步驟
 3. 查看 QUICKSTART.md 了解常用命令
 4. 執行 `python test_env.py` 測試環境

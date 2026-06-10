@@ -96,7 +96,7 @@ python src/scraper.py
 │   └── config.py       # 配置檔案
 ├── output/             # 輸出目錄
 ├── requirements.txt    # Python依賴
-└── README.md          # 說明文件
+└── SKILL.md          # 說明文件
 ```
 
 ## 注意事項
